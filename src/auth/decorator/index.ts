@@ -1,1 +1,1 @@
-import * as User from './user.decorator';
+export * from './get-user.decorator';
