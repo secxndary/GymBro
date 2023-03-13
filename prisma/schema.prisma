@@ -1,43 +1,138 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 model Role {
-  id          Int     @id @default(autoincrement())
-  name        String
-  description String?
-  users       User[]
+    id          Int     @id @default(autoincrement())
+    name        String  @unique
+    description String?
+    users       User[]
 
-  @@map("roles")
+    @@map("roles")
+}
+
+model MuscleGroup {
+    id       String     @id @default(uuid())
+    name     String     @unique
+    exercise Exercise[]
+
+    @@map("muscle_groups")
+}
+
+model SetType {
+    id          Int     @id @default(autoincrement())
+    name        String
+    description String?
+    set         Set[]
+
+    @@map("set_types")
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
+    id       String @id @default(uuid())
+    email    String @unique
+    password String
 
-  firstName String?
-  lastName  String?
+    firstName String?
+    lastName  String?
 
-  roleId Int
-  role   Role? @relation(fields: [roleId], references: [id])
+    roleId          Int
+    role            Role?             @relation(fields: [roleId], references: [id])
+    routine         Routine[]
+    BodyMeasurement BodyMeasurement[]
 
-  @@map("users")
+    @@map("users")
 }
 
 model Exercise {
-  id        Int    @id @default(autoincrement())
-  name      String
-  image     String
-  technique String
+    id        String @id @default(uuid())
+    name      String @unique
+    image     String
+    technique String
 
-  @@map("exercises")
+    muscleGroupId String
+    muscleGroup   MuscleGroup? @relation(fields: [muscleGroupId], references: [id])
+    session       Session[]
+    routine       Routine[]
+
+    @@map("exercises")
+}
+
+model Routine {
+    id     String @id @default(uuid())
+    title  String @unique
+    userId String
+
+    user     User?      @relation(fields: [userId], references: [id])
+    workout  Workout[]
+    exercise Exercise[]
+
+    @@map("routines")
+}
+
+model Workout {
+    id        String    @id @default(uuid())
+    timeStart DateTime
+    timeEnd   DateTime?
+    notes     String?
+    photo     String?
+
+    routineId String
+    routine   Routine?  @relation(fields: [routineId], references: [id])
+    session   Session[]
+
+    @@map("workouts")
+}
+
+model Session {
+    id         String @id @default(uuid())
+    exerciseId String
+    workoutId  String
+
+    exercise Exercise? @relation(fields: [exerciseId], references: [id])
+    workout  Workout?  @relation(fields: [workoutId], references: [id])
+    set      Set[]
+
+    @@map("sessions")
+}
+
+model Set {
+    id             String  @id @default(uuid())
+    sessionId      String
+    setTypeId      Int
+    sequenceNumber Int     @default(1)
+    weight         Float
+    repsCount      Int
+    isCompleted    Boolean @default(false)
+
+    session Session? @relation(fields: [sessionId], references: [id])
+    setType SetType? @relation(fields: [setTypeId], references: [id])
+
+    @@map("sets")
+}
+
+model BodyMeasurement {
+    id           String @id @default(uuid())
+    userId       String
+    weight       Float?
+    height       Float?
+    chest        Float?
+    nect         Float?
+    shoulders    Float?
+    leftBicep    Float?
+    rightBicep   Float?
+    leftForearm  Float?
+    rightForearm Float?
+    waist        Float?
+    thighs       Float?
+    calves       Float?
+
+    user User? @relation(fields: [userId], references: [id])
+
+    @@map("body_measurements")
 }

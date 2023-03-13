@@ -1,8 +1,10 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt/dist";
 import { ConfigService } from "@nestjs/config";
+import { Prisma } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import { AuthDto } from "./dto";
+import { v4 as uuidv4 } from 'uuid';
 import * as argon from 'argon2';
 
 
@@ -20,9 +22,10 @@ export class AuthService {
         try {
             const user = await this.prisma.user.create({
                 data: {
+                    id: uuidv4(),
                     email: dto.email,
                     password: hash,
-                    roleId: 1
+                    roleId: 1 
                 },
                 select: {
                     id: true,
@@ -33,11 +36,11 @@ export class AuthService {
             return this.signToken(user.id, user.email);
         }
         catch (err) {
-            // if (err instanceof PrismaClientKnownRequestError)
-            // if (err.code === 'P2002')
-            console.log({ err, });
-            throw new ForbiddenException('Credentials already taken');
-            // throw err;
+            if (err instanceof Prisma.PrismaClientKnownRequestError)
+                if (err.code === 'P2002') {
+                    throw new ForbiddenException('Credentials already taken');
+                }
+            throw err;
         }
     }
 
@@ -55,7 +58,7 @@ export class AuthService {
     }
 
 
-    async signToken(userId: number, email: string): Promise<{ access_token: string }> {
+    async signToken(userId: string, email: string): Promise<{ access_token: string }> {
         const payload = {
             sub: userId,
             email
