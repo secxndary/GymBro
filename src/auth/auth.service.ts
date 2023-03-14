@@ -25,7 +25,7 @@ export class AuthService {
                     id: uuidv4(),
                     email: dto.email,
                     password: hash,
-                    roleId: 1 
+                    roleId: 1
                 },
                 select: {
                     id: true,

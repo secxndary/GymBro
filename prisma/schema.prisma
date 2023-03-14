@@ -34,13 +34,13 @@ model SetType {
 }
 
 model User {
-    id       String @id @default(uuid())
-    email    String @unique
-    password String
-
-    firstName String?
-    lastName  String?
-
+    id              String            @id @default(uuid())
+    email           String            @unique
+    password        String
+    //
+    firstName       String?
+    lastName        String?
+    //
     roleId          Int
     role            Role?             @relation(fields: [roleId], references: [id])
     routine         Routine[]
@@ -50,11 +50,11 @@ model User {
 }
 
 model Exercise {
-    id        String @id @default(uuid())
-    name      String @unique
-    image     String
-    technique String
-
+    id            String       @id @default(uuid())
+    name          String       @unique
+    image         String
+    technique     String
+    //
     muscleGroupId String
     muscleGroup   MuscleGroup? @relation(fields: [muscleGroupId], references: [id])
     session       Session[]
@@ -64,10 +64,10 @@ model Exercise {
 }
 
 model Routine {
-    id     String @id @default(uuid())
-    title  String @unique
-    userId String
-
+    id       String     @id @default(uuid())
+    title    String
+    userId   String
+    //
     user     User?      @relation(fields: [userId], references: [id])
     workout  Workout[]
     exercise Exercise[]
@@ -81,7 +81,7 @@ model Workout {
     timeEnd   DateTime?
     notes     String?
     photo     String?
-
+    //
     routineId String
     routine   Routine?  @relation(fields: [routineId], references: [id])
     session   Session[]
@@ -90,28 +90,29 @@ model Workout {
 }
 
 model Session {
-    id         String @id @default(uuid())
+    id         String    @id @default(uuid())
     exerciseId String
     workoutId  String
-
-    exercise Exercise? @relation(fields: [exerciseId], references: [id])
-    workout  Workout?  @relation(fields: [workoutId], references: [id])
-    set      Set[]
+    //
+    exercise   Exercise? @relation(fields: [exerciseId], references: [id])
+    workout    Workout?  @relation(fields: [workoutId], references: [id])
+    set        Set[]
 
     @@map("sessions")
 }
 
 model Set {
-    id             String  @id @default(uuid())
+    id             String   @id @default(uuid())
     sessionId      String
     setTypeId      Int
-    sequenceNumber Int     @default(1)
+    //
+    sequenceNumber Int      @default(1)
     weight         Float
     repsCount      Int
-    isCompleted    Boolean @default(false)
-
-    session Session? @relation(fields: [sessionId], references: [id])
-    setType SetType? @relation(fields: [setTypeId], references: [id])
+    isCompleted    Boolean  @default(false)
+    //
+    session        Session? @relation(fields: [sessionId], references: [id])
+    setType        SetType? @relation(fields: [setTypeId], references: [id])
 
     @@map("sets")
 }
@@ -119,6 +120,7 @@ model Set {
 model BodyMeasurement {
     id           String @id @default(uuid())
     userId       String
+    //
     weight       Float?
     height       Float?
     chest        Float?
@@ -131,8 +133,8 @@ model BodyMeasurement {
     waist        Float?
     thighs       Float?
     calves       Float?
-
-    user User? @relation(fields: [userId], references: [id])
+    //
+    user         User?  @relation(fields: [userId], references: [id])
 
     @@map("body_measurements")
 }
