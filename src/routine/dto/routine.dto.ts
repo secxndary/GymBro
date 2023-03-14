@@ -1,12 +1,18 @@
-import { Exercise } from "@prisma/client";
-import { IsString, IsUUID } from "class-validator";
+import {
+    IsNotEmpty,
+    IsString,
+    IsUUID
+} from "class-validator";
+
 
 export class RoutineDto {
 
     @IsString()
+    @IsNotEmpty()
     title: string;
 
     @IsUUID()
     @IsString()
+    @IsNotEmpty()
     userId: string;
 }

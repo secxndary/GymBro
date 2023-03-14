@@ -1,9 +1,18 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Post,
+    Put,
+    Delete,
+    Param,
+    UseGuards
+} from '@nestjs/common';
+import { User } from '@prisma/client';
 import { RoutineService } from './routine.service';
 import { JwtGuard } from '../auth/guard';
 import { GetUser } from '../auth/decorator';
-import { User } from '@prisma/client';
-import { RoutineDto } from './dto';
+import { RoutineDto, RoutineUpdateDto } from './dto';
 
 
 @UseGuards(JwtGuard)
@@ -22,5 +31,21 @@ export class RoutineController {
         @GetUser() user: User
     ) {
         return this.routineService.create(dto, user);
+    }
+
+    @Put('update/:id')
+    update(
+        @Param('id') id: string,
+        @Body() dto: RoutineUpdateDto
+    ) {
+        return this.routineService.update(id, dto);
+    }
+
+    @Delete('delete/:id')
+    delete(
+        @Param('id') id: string,
+        @GetUser() user: User
+    ) {
+        return this.routineService.delete(id, user);
     }
 }

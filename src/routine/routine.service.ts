@@ -1,7 +1,7 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { NotFoundException, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { RoutineDto } from './dto';
+import { RoutineDto, RoutineUpdateDto } from './dto';
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -10,11 +10,12 @@ export class RoutineService {
     constructor(private prisma: PrismaService) { }
 
     async get(user: User) {
-        const routines = this.prisma.routine.findMany({
+        const routines = await this.prisma.routine.findMany({
             where: { userId: user.id },
             select: {
                 id: true,
-                title: true
+                title: true,
+                userId: true
             }
         });
         return routines;
@@ -32,9 +33,7 @@ export class RoutineService {
             }
         });
         if (userHasRoutine)
-            throw new ForbiddenException('This user already has routine with this name');
-
-        console.log({ dto, })
+            throw new NotFoundException('This user already has routine with this name');
 
         const routine = await this.prisma.routine.create({
             data: {
@@ -43,10 +42,55 @@ export class RoutineService {
                 userId: user.id,
             },
             select: {
+                id: true,
                 title: true,
                 userId: true
             }
         });
         return routine;
+    }
+
+
+    async update(
+        id: string,
+        dto: RoutineUpdateDto
+    ) {
+        const routineToUpdate = await this.prisma.routine.findUnique({
+            where: { id: id }
+        });
+
+        if (!routineToUpdate)
+            throw new NotFoundException('This user does not have a routine with such id');
+
+        const routineUpdated = await this.prisma.routine.update({
+            where: { id: id },
+            data: {
+                title: dto.title
+            }
+        });
+
+        return routineUpdated;
+    }
+
+
+    async delete(
+        id: string,
+        user: User
+    ) {
+        const routineToDelete = await this.prisma.routine.findFirst({
+            where: {
+                id: id,
+                userId: user.id
+            }
+        });
+
+        if (!routineToDelete)
+            throw new NotFoundException('This user does not have a routine with such id');
+
+        await this.prisma.routine.delete({
+            where: { id: routineToDelete.id }
+        });
+
+        return routineToDelete;
     }
 }
