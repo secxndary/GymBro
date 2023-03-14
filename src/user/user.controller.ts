@@ -1,8 +1,15 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
-import { UserService } from './user.service';
-import { JwtGuard } from '../auth/guard';
-import { GetUser } from '../auth/decorator';
+import {
+    Controller,
+    Get,
+    UseGuards,
+    Body,
+    Post
+} from '@nestjs/common';
 import { User } from '@prisma/client';
+import { UserService } from './user.service';
+import { GetUser } from '../auth/decorator';
+import { JwtGuard } from '../auth/guard';
+import { MeasurementDto } from './dto';
 
 
 @UseGuards(JwtGuard)
@@ -12,7 +19,11 @@ export class UserController {
 
     @Get('me')
     getMe(@GetUser() user: User) {
-        console.log({ user, });
         return user;
+    }
+
+    @Post('measurements')
+    addMeasurements(@Body() dto: MeasurementDto) {
+        return this.userService.addMeasurements(dto);
     }
 }

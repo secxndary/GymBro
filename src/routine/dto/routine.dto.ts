@@ -12,7 +12,6 @@ export class RoutineDto {
     title: string;
 
     @IsUUID()
-    @IsString()
     @IsNotEmpty()
     userId: string;
 }

@@ -124,7 +124,7 @@ model BodyMeasurement {
     weight       Float?
     height       Float?
     chest        Float?
-    nect         Float?
+    neck         Float?
     shoulders    Float?
     leftBicep    Float?
     rightBicep   Float?
