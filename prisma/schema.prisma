@@ -42,7 +42,7 @@ model User {
     lastName        String?
     //
     roleId          Int
-    role            Role?             @relation(fields: [roleId], references: [id])
+    role            Role              @relation(fields: [roleId], references: [id])
     routine         Routine[]
     BodyMeasurement BodyMeasurement[]
 

@@ -53,12 +53,15 @@ export class RoutineService {
 
     async update(
         id: string,
-        dto: RoutineUpdateDto
+        dto: RoutineUpdateDto,
+        user: User
     ) {
-        const routineToUpdate = await this.prisma.routine.findUnique({
-            where: { id: id }
+        const routineToUpdate = await this.prisma.routine.findFirst({
+            where: {
+                id: id,
+                userId: user.id
+            }
         });
-
         if (!routineToUpdate)
             throw new NotFoundException('This user does not have a routine with such id');
 
@@ -83,7 +86,6 @@ export class RoutineService {
                 userId: user.id
             }
         });
-
         if (!routineToDelete)
             throw new NotFoundException('This user does not have a routine with such id');
 

@@ -36,9 +36,10 @@ export class RoutineController {
     @Put('update/:id')
     update(
         @Param('id') id: string,
-        @Body() dto: RoutineUpdateDto
+        @Body() dto: RoutineUpdateDto,
+        @GetUser() user: User
     ) {
-        return this.routineService.update(id, dto);
+        return this.routineService.update(id, dto, user);
     }
 
     @Delete('delete/:id')
