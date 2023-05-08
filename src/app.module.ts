@@ -11,8 +11,8 @@ import { RoutineModule } from './routine/routine.module';
         AuthModule,
         PrismaModule,
         UserModule,
-        ConfigModule.forRoot({ isGlobal: true }),
-        RoutineModule    // mandatory for reading .env variables
+        ConfigModule.forRoot({ isGlobal: true }),  // mandatory for reading .env variables
+        RoutineModule
     ],
 })
 export class AppModule { }

@@ -26,4 +26,9 @@ export class UserController {
     addMeasurements(@Body() dto: MeasurementDto) {
         return this.userService.addMeasurements(dto);
     }
+
+    @Get('all')
+    getAllUsers(@GetUser() user: User) {
+        return this.userService.getAllUsers(user);
+    }
 }
