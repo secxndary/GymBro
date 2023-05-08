@@ -2,14 +2,37 @@ import { Injectable, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { MeasurementDto } from './dto';
 import { User } from '@prisma/client';
+import { v4 as uuidv4 } from 'uuid';
+
 
 @Injectable()
 export class UserService {
     constructor(private prisma: PrismaService) { }
 
-    async addMeasurements(dto: MeasurementDto) {
-        // const measurements = this.prisma.bodyMeasurement.create({ dto });
+
+    async addMeasurements(
+        user: User,
+        dto: MeasurementDto
+    ) {
+        const { weight, height, chest, neck, shoulders, leftBicep, rightBicep,
+            leftForearm, rightForearm, waist, thighs, calves } = dto;
+        const measurements = this.prisma.bodyMeasurement.create({
+            data: {
+                id: uuidv4(),
+                userId: user.id,
+                weight, height, chest, neck, shoulders,
+                leftBicep, rightBicep, leftForearm, rightForearm,
+                waist, thighs, calves
+            }
+        });
+        return measurements;
     }
+
+
+    async getMe(user: User) {
+        return user;
+    }
+
 
     async getAllUsers(user: User) {
         if (user.roleId === 2)

@@ -19,16 +19,19 @@ export class UserController {
 
     @Get('me')
     getMe(@GetUser() user: User) {
-        return user;
-    }
-
-    @Post('measurements')
-    addMeasurements(@Body() dto: MeasurementDto) {
-        return this.userService.addMeasurements(dto);
+        return this.userService.getMe(user);
     }
 
     @Get('all')
     getAllUsers(@GetUser() user: User) {
         return this.userService.getAllUsers(user);
+    }
+
+    @Post('measurements')
+    addMeasurements(
+        @GetUser() user: User,
+        @Body() dto: MeasurementDto
+    ) {
+        return this.userService.addMeasurements(user, dto);
     }
 }
