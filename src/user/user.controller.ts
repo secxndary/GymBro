@@ -1,9 +1,9 @@
 import {
     Controller,
     Get,
-    UseGuards,
+    Post,
     Body,
-    Post
+    UseGuards
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { UserService } from './user.service';
@@ -28,10 +28,7 @@ export class UserController {
     }
 
     @Post('measurements')
-    addMeasurements(
-        @GetUser() user: User,
-        @Body() dto: MeasurementDto
-    ) {
+    addMeasurements(@GetUser() user: User, @Body() dto: MeasurementDto) {
         return this.userService.addMeasurements(user, dto);
     }
 }

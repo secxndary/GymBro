@@ -3,6 +3,7 @@ import { JwtService } from "@nestjs/jwt/dist";
 import { ConfigService } from "@nestjs/config";
 import { Prisma } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
+import { RoleService } from "../role/role.service";
 import { AuthDto } from "./dto";
 import { v4 as uuidv4 } from 'uuid';
 import * as argon from 'argon2';
@@ -13,19 +14,21 @@ export class AuthService {
     constructor(
         private prisma: PrismaService,
         private jwt: JwtService,
-        private config: ConfigService
+        private config: ConfigService,
+        private roleService: RoleService
     ) { }
 
 
     async signup(dto: AuthDto) {
         const hash = await argon.hash(dto.password);
+        const role = await this.roleService.getRoleByName('USER');
         try {
             const user = await this.prisma.user.create({
                 data: {
                     id: uuidv4(),
                     email: dto.email,
                     password: hash,
-                    roleId: 1
+                    roleId: role?.id
                 },
                 select: {
                     id: true,

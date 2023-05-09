@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 import { RoutineModule } from './routine/routine.module';
+import { RoleModule } from './role/role.module';
 
 
 @Module({
@@ -12,7 +13,7 @@ import { RoutineModule } from './routine/routine.module';
         PrismaModule,
         UserModule,
         ConfigModule.forRoot({ isGlobal: true }),  // mandatory for reading .env variables
-        RoutineModule
+        RoutineModule, RoleModule
     ],
 })
 export class AppModule { }
