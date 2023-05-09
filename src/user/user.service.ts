@@ -43,7 +43,7 @@ export class UserService {
                     // password: true,
                     firstName: true,
                     lastName: true,
-                    roleId: true
+                    role: true
                 }
             });
         else

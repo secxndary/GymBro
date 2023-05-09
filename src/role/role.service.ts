@@ -1,7 +1,6 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { RoleDto } from './dto';
-import { where } from 'sequelize';
 
 @Injectable()
 export class RoleService {

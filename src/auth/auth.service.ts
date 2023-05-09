@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt/dist";
 import { ConfigService } from "@nestjs/config";
-import { Prisma } from "@prisma/client";
+import { Prisma, Role } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import { RoleService } from "../role/role.service";
 import { AuthDto } from "./dto";
@@ -20,8 +20,9 @@ export class AuthService {
 
 
     async signup(dto: AuthDto) {
+        const DEFAULT_ROLE = 'USER';
         const hash = await argon.hash(dto.password);
-        const role = await this.roleService.getRoleByName('USER');
+        const role = await this.roleService.getRoleByName(DEFAULT_ROLE);
         try {
             const user = await this.prisma.user.create({
                 data: {
@@ -33,10 +34,10 @@ export class AuthService {
                 select: {
                     id: true,
                     email: true,
-                    roleId: true
+                    roleId: true,
                 },
             });
-            return this.signToken(user.id, user.email);
+            return this.signToken(user.id, user.email, user.roleId);
         }
         catch (err) {
             if (err instanceof Prisma.PrismaClientKnownRequestError)
@@ -57,14 +58,15 @@ export class AuthService {
         if (!passwordMatches)
             throw new ForbiddenException('Passwords do not match');
 
-        return this.signToken(user.id, user.email);
+        return this.signToken(user.id, user.email, user.roleId);
     }
 
 
-    async signToken(userId: string, email: string): Promise<{ access_token: string }> {
+    async signToken(userId: string, email: string, roleId: number): Promise<{ access_token: string }> {
         const payload = {
             sub: userId,
-            email
+            email,
+            roleId
         };
         const secret = this.config.get('JWT_SECRET');
         const token = await this.jwt.signAsync(payload, {
@@ -72,6 +74,6 @@ export class AuthService {
             secret
         });
 
-        return { access_token: token, };
+        return { access_token: token };
     }
 }
