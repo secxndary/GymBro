@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { RoutineService } from './routine.service';
-import { JwtGuard } from '../auth/guard';
-import { GetUser } from '../auth/decorator';
+import { JwtGuard } from '../../auth/guard';
+import { GetUser } from '../../auth/decorator';
 import { RoutineDto, RoutineUpdateDto } from './dto';
 
 

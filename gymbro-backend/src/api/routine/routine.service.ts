@@ -1,6 +1,6 @@
 import { NotFoundException, Injectable, ConflictException } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { RoutineDto, RoutineUpdateDto } from './dto';
 import { v4 as uuidv4 } from 'uuid';
 

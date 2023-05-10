@@ -3,7 +3,7 @@ import { JwtService } from "@nestjs/jwt/dist";
 import { ConfigService } from "@nestjs/config";
 import { Prisma, Role } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
-import { RoleService } from "../role/role.service";
+import { RoleService } from "../api/role/role.service";
 import { AuthDto } from "./dto";
 import { v4 as uuidv4 } from 'uuid';
 import * as argon from 'argon2';

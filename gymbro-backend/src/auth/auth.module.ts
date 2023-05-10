@@ -4,9 +4,9 @@ import { PrismaModule } from "../prisma/prisma.module";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { JwtStrategy } from "./strategy";
-import { RoleModule } from "../role/role.module";
-import { UserModule } from "../user/user.module";
-import { UserService } from "../user/user.service";
+import { RoleModule } from "../api/role/role.module";
+import { UserModule } from "../api/user/user.module";
+import { UserService } from "../api/user/user.service";
 
 
 @Module({
