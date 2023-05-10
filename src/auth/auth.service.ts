@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import * as argon from 'argon2';
 
 
-@Injectable({})
+@Injectable()
 export class AuthService {
     constructor(
         private prisma: PrismaService,

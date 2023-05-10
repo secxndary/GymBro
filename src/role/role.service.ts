@@ -1,6 +1,7 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { RoleDto } from './dto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class RoleService {
@@ -8,7 +9,7 @@ export class RoleService {
     constructor(private prisma: PrismaService) { }
 
     async getRoles() {
-        return this.prisma.role.findMany();
+        return (await this.prisma.role.findMany()).sort((a, b) => a.id - b.id);
     }
 
     async getRoleByName(name: string) {
@@ -23,7 +24,9 @@ export class RoleService {
 
     async createRole(dto: RoleDto) {
         const { name, description } = dto;
-        const existingRole = this.prisma.role.findUnique({ where: { name } });
+        console.log({ dto })
+        const existingRole = await this.prisma.role.findUnique({ where: { name } });
+        console.log(existingRole)
         if (existingRole)
             throw new ConflictException(`There is already a role with name = ${name}`)
         else

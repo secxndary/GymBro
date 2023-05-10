@@ -23,8 +23,8 @@ export class UserController {
         return this.userService.getMe(user);
     }
 
-    @Get('all')
     @Roles('ADMIN')
+    @Get('all')
     getAllUsers(@GetUser() user: User) {
         return this.userService.getAllUsers(user);
     }
