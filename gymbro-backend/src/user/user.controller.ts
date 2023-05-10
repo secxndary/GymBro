@@ -10,7 +10,7 @@ import { UserService } from './user.service';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
 import { MeasurementDto } from './dto';
-import { Roles } from '../auth/decorator/roles-auth.decorator';
+import { Roles } from '../auth/decorator/auth-roles.decorator';
 
 
 @UseGuards(JwtGuard)
