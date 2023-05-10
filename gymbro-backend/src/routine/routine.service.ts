@@ -1,4 +1,4 @@
-import { NotFoundException, Injectable } from '@nestjs/common';
+import { NotFoundException, Injectable, ConflictException } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { RoutineDto, RoutineUpdateDto } from './dto';
@@ -33,7 +33,7 @@ export class RoutineService {
             }
         });
         if (userHasRoutine)
-            throw new NotFoundException('This user already has routine with this name');
+            throw new ConflictException('This user already has routine with this name');
 
         const routine = await this.prisma.routine.create({
             data: {

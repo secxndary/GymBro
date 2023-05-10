@@ -1,9 +1,4 @@
-import {
-    IsNotEmpty,
-    IsString,
-    IsUUID
-} from "class-validator";
-
+import { IsNotEmpty, IsString, IsUUID } from "class-validator";
 
 export class RoutineDto {
 
@@ -11,7 +6,7 @@ export class RoutineDto {
     @IsNotEmpty()
     title: string;
 
-    @IsUUID()
-    @IsNotEmpty()
-    userId: string;
+    // @IsUUID()
+    // @IsNotEmpty()
+    // userId: string;
 }
