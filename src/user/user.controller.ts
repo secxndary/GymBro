@@ -10,6 +10,7 @@ import { UserService } from './user.service';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
 import { MeasurementDto } from './dto';
+import { Roles } from '../auth/decorator/roles-auth.decorator';
 
 
 @UseGuards(JwtGuard)
@@ -23,6 +24,7 @@ export class UserController {
     }
 
     @Get('all')
+    @Roles('ADMIN')
     getAllUsers(@GetUser() user: User) {
         return this.userService.getAllUsers(user);
     }
