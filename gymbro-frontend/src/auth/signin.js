@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function LoginPage() {
+
+export default function SignInPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
@@ -9,36 +10,31 @@ function LoginPage() {
 
     async function handleLogin(e) {
         e.preventDefault();
+        const res = null;
         try {
-            console.log(JSON.stringify({ email, password }))
-            // const response = await fetch("http://localhost:3999/api/auth/signin", {
-            //     method: "POST",
-            //     headers: { "Content-Type": "application/json" },
-            //     mode: "no-cors",
-            //     body: JSON.stringify({ email, password })
-            // });
-
-            const { data } = await axios.post("http://localhost:3999/api/auth/signin",
-                { email, password });
-
-            console.log(data);
+            res = await axios.post(
+                "http://localhost:3999/api/auth/signin",
+                {
+                    email,
+                    password
+                });
+            const { data } = res;
 
             // if (!response.ok) {
-            //     console.log(response);
             //     throw new Error("Failed to log in");
             // }
 
             localStorage.setItem("access_token", data.access_token);
             console.log(localStorage.getItem("access_token"))
-            // window.location.href = "/dashboard";
         } catch (err) {
-            setError(err.message);
+            const errorMessage = err.response.data.message;
+            setError(errorMessage);
         }
     }
 
     return (
         <div>
-            <h1>Login Page</h1>
+            <h1>Sign in page</h1>
             {error && <p>{error}</p>}
             <form onSubmit={handleLogin}>
                 <label>
@@ -46,7 +42,7 @@ function LoginPage() {
                     <input
                         type="text"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={e => setEmail(e.target.value)}
                     />
                 </label>
                 <br />
@@ -56,14 +52,13 @@ function LoginPage() {
                     <input
                         type="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={e => setPassword(e.target.value)}
                     />
                 </label>
                 <br />
                 <button type="submit">Log In</button>
+                <button>Register</button>
             </form>
         </div>
     );
 }
-
-export default LoginPage;
