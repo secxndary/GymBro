@@ -12,6 +12,7 @@ export default function SignInPage() {
         e.preventDefault();
         const res = null;
         try {
+            setError(null);
             res = await axios.post(
                 "http://localhost:3999/api/auth/signin",
                 {
@@ -27,7 +28,7 @@ export default function SignInPage() {
             localStorage.setItem("access_token", data.access_token);
             console.log(localStorage.getItem("access_token"))
         } catch (err) {
-            const errorMessage = err.response.data.message;
+            const errorMessage = err.response ? err.response.data.message : err.message;
             setError(errorMessage);
         }
     }
@@ -35,7 +36,11 @@ export default function SignInPage() {
     return (
         <div>
             <h1>Sign in page</h1>
-            {error && <p>{error}</p>}
+            {
+                (error && Array.isArray(error)) ?
+                    error.map(err => (<p>{err}</p>)) :
+                    <p>{error}</p>
+            }
             <form onSubmit={handleLogin}>
                 <label>
                     Email:
