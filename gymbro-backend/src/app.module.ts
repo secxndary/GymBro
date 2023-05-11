@@ -24,7 +24,7 @@ import { SessionModule } from './api/session/session.module';
         WorkoutModule,
         SessionModule,
     ],
-    controllers: [WorkoutController],
-    providers: [WorkoutService],
+    // controllers: [WorkoutController],
+    // providers: [WorkoutService],
 })
 export class AppModule { }

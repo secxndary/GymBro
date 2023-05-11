@@ -9,7 +9,13 @@ import { v4 as uuidv4 } from 'uuid';
 export class RoutineService {
     constructor(private prisma: PrismaService) { }
 
-    async get(user: User) {
+    
+    async getAllRoutines() {
+        return await await this.prisma.routine.findMany();
+    }
+
+
+    async getRoutines(user: User) {
         const routines = await this.prisma.routine.findMany({
             where: { userId: user.id },
             select: {
@@ -22,7 +28,7 @@ export class RoutineService {
     }
 
 
-    async create(
+    async createRoutine(
         dto: RoutineDto,
         user: User
     ) {
@@ -51,7 +57,7 @@ export class RoutineService {
     }
 
 
-    async update(
+    async updateRoutine(
         id: string,
         dto: RoutineUpdateDto,
         user: User
@@ -76,7 +82,7 @@ export class RoutineService {
     }
 
 
-    async delete(
+    async deleteRoutine(
         id: string,
         user: User
     ) {

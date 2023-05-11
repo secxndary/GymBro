@@ -3,11 +3,19 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import RoutinesPage from './routine';
+import LoginPage from './auth/signin';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    {/* user = {
+      id = "6ab46a47-7155-4976-be77-783a099e37a7"
+    } */}
+    {/* <App /> */}
+    {/* <RoutineList user={{ id: "6ab46a47-7155-4976-be77-783a099e37a7" }} /> */}
+    {/* <RoutinesPage /> */}
+    <LoginPage />
   </React.StrictMode>
 );
 

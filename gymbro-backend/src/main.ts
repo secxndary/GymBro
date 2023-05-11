@@ -6,6 +6,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const PORT = process.env.PORT || 3999;
+
     const config = new DocumentBuilder()
         .setTitle('GymBro')
         .setDescription('Приложение для отслеживания прогресса в тренажерном зале')
@@ -15,6 +16,8 @@ async function bootstrap() {
     SwaggerModule.setup('api/docs', app, document);
 
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+    app.setGlobalPrefix('api');
+    app.enableCors();
     await app.listen(PORT, () => console.log(`[OK] Server running at localhost:${PORT}/\n`));
 }
 bootstrap();
