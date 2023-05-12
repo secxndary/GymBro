@@ -6,6 +6,8 @@ import axios from "axios";
 export default function SignUpPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [firstNameState, setFirstName] = useState("");
+    const [lastNameState, setLastName] = useState("");
     const [error, setError] = useState(null);
 
 
@@ -17,14 +19,17 @@ export default function SignUpPage() {
 
     async function handleRegister(e) {
         e.preventDefault();
-        var res = null;
         try {
             setError(null);
-            res = await axios.post(
-                "http://localhost:3999/api/auth/signin",
+            var firstName = (firstNameState === "") ? null : firstNameState;
+            var lastName = (lastNameState === "") ? null : lastNameState;
+            const res = await axios.post(
+                "http://localhost:3999/api/auth/signup",
                 {
                     email,
-                    password
+                    password,
+                    firstName,
+                    lastName
                 });
             const { data } = res;
 
@@ -57,6 +62,7 @@ export default function SignUpPage() {
                 </label>
                 <br />
                 <br />
+
                 <label>
                     Password:
                     <input
@@ -66,6 +72,30 @@ export default function SignUpPage() {
                     />
                 </label>
                 <br />
+                <br />
+
+                <label>
+                    First Name:
+                    <input
+                        type="text"
+                        value={firstNameState}
+                        onChange={e => setFirstName(e.target.value)}
+                    />
+                </label>
+                <br />
+                <br />
+
+                <label>
+                    Last Name:
+                    <input
+                        type="text"
+                        value={lastNameState}
+                        onChange={e => setLastName(e.target.value)}
+                    />
+                </label>
+                <br />
+                <br />
+
                 <button type="submit">Sign Up</button>
                 <button onClick={routeChange(`/signin`)}>Already have an account?</button>
             </form>

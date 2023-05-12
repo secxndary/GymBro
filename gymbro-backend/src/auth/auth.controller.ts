@@ -1,12 +1,12 @@
 import {
+    Post,
     Body,
     Controller,
-    Post,
     HttpCode,
     HttpStatus
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { AuthDto } from "./dto";
+import { AuthDto, RegisterDto } from "./dto";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 
@@ -18,7 +18,7 @@ export class AuthController {
     @ApiOperation({ summary: 'Регистрация пользователя' })
     @ApiResponse({ status: 201, type: Object })
     @Post('signup')
-    signup(@Body() dto: AuthDto) {
+    signup(@Body() dto: RegisterDto) {
         return this.authService.signup(dto);
     }
 

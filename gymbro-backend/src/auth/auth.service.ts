@@ -4,7 +4,7 @@ import { ConfigService } from "@nestjs/config";
 import { Prisma, Role } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import { RoleService } from "../api/role/role.service";
-import { AuthDto } from "./dto";
+import { AuthDto, RegisterDto } from "./dto";
 import { v4 as uuidv4 } from 'uuid';
 import * as argon from 'argon2';
 
@@ -19,21 +19,26 @@ export class AuthService {
     ) { }
 
 
-    async signup(dto: AuthDto) {
+    async signup(dto: RegisterDto) {
         const DEFAULT_ROLE = 'USER';
-        const hash = await argon.hash(dto.password);
+        const { email, password, firstName, lastName } = dto;
+        const hash = await argon.hash(password);
         const role = await this.roleService.getRoleByName(DEFAULT_ROLE);
         try {
             const user = await this.prisma.user.create({
                 data: {
                     id: uuidv4(),
-                    email: dto.email,
+                    email: email,
                     password: hash,
+                    firstName: firstName,
+                    lastName: lastName,
                     roleId: role?.id
                 },
                 select: {
                     id: true,
                     email: true,
+                    firstName: true,
+                    lastName: true,
                     roleId: true,
                 },
             });
