@@ -1,17 +1,11 @@
-import { IsDate, IsDateString, IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { IsDateString, IsNotEmpty, IsUUID } from "class-validator";
 
 export class WorkoutDto {
 
-    @IsDate()
+    @IsDateString()
     @IsNotEmpty()
     timeStart: Date;
 
-    @IsDate()
-    timeEnd: Date;
-
-    @IsString()
-    notes: string;
-
-    @IsString()
-    photo: string;
+    @IsUUID()
+    routineId: string
 }

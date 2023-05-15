@@ -9,9 +9,9 @@ import { v4 as uuidv4 } from 'uuid';
 export class RoutineService {
     constructor(private prisma: PrismaService) { }
 
-    
+
     async getAllRoutines() {
-        return await await this.prisma.routine.findMany();
+        return await this.prisma.routine.findMany();
     }
 
 
