@@ -6,26 +6,27 @@ import axios from "axios";
 export default function WorkoutPage() {
     const [workout, setWorkout] = useState([]);
     const accessToken = localStorage.getItem("access_token");
+    const workoutId = window.location.href.split('/')[4];
 
     useEffect(() => {
         async function fetchWorkout() {
             const res = await axios.get(
-                "http://localhost:3999/api/workout/", {
+                `http://localhost:3999/api/workout/${workoutId}`, {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
                 }
-            })
+            });
             const { data } = res;
-            setRoutines(data);
+            setWorkout(data);
         }
-        fetchRoutines();
-    });
+        fetchWorkout();
+    }, []);
 
 
     return (
         <div>
-            <h1>My Routines</h1>
-            <RoutineList routines={routines} />
+            <h1>Workout</h1>
+            <div>Started: {new Date(workout.timeStart).toLocaleString()}</div>
         </div>
     );
 }
