@@ -8,6 +8,7 @@ export default function WorkoutPage() {
     const accessToken = localStorage.getItem("access_token");
     const workoutId = window.location.href.split('/')[4];
 
+
     useEffect(() => {
         async function fetchWorkout() {
             const res = await axios.get(
@@ -23,10 +24,29 @@ export default function WorkoutPage() {
     }, []);
 
 
+
+    async function handleFinishWorkout() {
+        const res = await axios.put(
+            `http://localhost:3999/api/workout/end`,
+            {
+                timeEnd: new Date().toISOString(),
+                workoutId: workout.id
+            },
+            {
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+        const { data } = res;
+        setWorkout(data);
+    }
+
+
     return (
         <div>
             <h1>Workout</h1>
             <div>Started: {new Date(workout.timeStart).toLocaleString()}</div>
+            <div>Finished: {new Date(workout.timeEnd).toLocaleString()}</div>
+            <br />
+            <button onClick={handleFinishWorkout}>Finish workout</button>
         </div>
     );
 }

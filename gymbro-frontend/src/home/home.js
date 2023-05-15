@@ -60,7 +60,7 @@ export default function HomePage() {
     function RoutineList(props) {
         return (
             <div>
-                {props.routines.map((routine) => (
+                {props.routines.map(routine => (
                     <div key={routine.id}>
                         <h3>{routine.title}</h3>
                         <button onClick={routeChange(routine.id)}>
