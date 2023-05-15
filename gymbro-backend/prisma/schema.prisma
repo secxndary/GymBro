@@ -52,8 +52,8 @@ model User {
 model Exercise {
     id            String       @id @default(uuid())
     name          String       @unique
-    image         String
-    technique     String
+    image         String?
+    technique     String?
     //
     muscleGroupId String       @map("muscle_group_id")
     muscleGroup   MuscleGroup? @relation(fields: [muscleGroupId], references: [id])
@@ -77,8 +77,8 @@ model Routine {
 
 model Workout {
     id        String    @id @default(uuid())
-    timeStart DateTime  @map("time_start")
-    timeEnd   DateTime? @map("time_end")
+    timeStart DateTime  @map("time_start") @db.Timestamptz()
+    timeEnd   DateTime? @map("time_end") @db.Timestamptz()
     notes     String?
     photo     String?
     //

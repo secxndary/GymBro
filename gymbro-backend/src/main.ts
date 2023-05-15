@@ -18,6 +18,6 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
     app.setGlobalPrefix('api');
     app.enableCors();
-    await app.listen(PORT, () => console.log(`[OK] Server running at localhost:${PORT}/\n`));
+    await app.listen(PORT, () => console.log(`\n[OK] Server running at localhost:${PORT}/`));
 }
 bootstrap();
