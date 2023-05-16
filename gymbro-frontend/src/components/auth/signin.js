@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import NavBar from "../navbar";
 
 
 export default function SignInPage() {
@@ -59,6 +58,7 @@ export default function SignInPage() {
                             type="text"
                             value={email}
                             onChange={e => setEmail(e.target.value)}
+                            required
                         />
                     </label>
                     <br />
@@ -70,6 +70,7 @@ export default function SignInPage() {
                             type="password"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
+                            required
                         />
                     </label>
                     <br />

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import NavBar from "../navbar";
 
 
 export default function SignUpPage() {
@@ -42,6 +41,7 @@ export default function SignUpPage() {
             setError(errorMessage);
         }
     }
+
 
 
     return (

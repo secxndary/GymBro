@@ -47,14 +47,20 @@ export default function HomePage() {
             <div>
                 {props.routines.map(routine => (
                     <div key={routine.id}>
-                        <h3>{routine.title}</h3>
-                        <button onClick={changePathWorkout(routine.id)}>
+                        <h3 className="mt-4">{routine.title}</h3>
+                        <button
+                            className="btn btn-dark"
+                            onClick={changePathWorkout(routine.id)}>
                             Start Routine
                         </button>
                     </div>
                 ))}
-                <br /> <br /> <br />
-                <button onClick={changePathNewRoutine}>Create new routine</button>
+                <br />
+                <button
+                    className="btn btn-primary mt-3 fs-4"
+                    onClick={changePathNewRoutine}>
+                    Create new routine
+                </button>
             </div>
         );
     }
@@ -63,8 +69,10 @@ export default function HomePage() {
     return (
         <div>
             <NavBar />
-            <h1>My Routines</h1>
-            <RoutineList routines={routines} />
+            <div className="container mt-4">
+                <h1 className="mb-4">My Routines</h1>
+                <RoutineList routines={routines} />
+            </div>
         </div>
     );
 }
