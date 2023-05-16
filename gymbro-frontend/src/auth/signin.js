@@ -21,7 +21,7 @@ export default function SignInPage() {
         try {
             setError(null);
             res = await axios.post(
-                "http://localhost:3999/api/auth/signin",
+                "https://localhost:3999/api/auth/signin",
                 {
                     email,
                     password

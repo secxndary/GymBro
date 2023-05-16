@@ -24,7 +24,7 @@ export default function SignUpPage() {
             var firstName = (firstNameState === "") ? null : firstNameState;
             var lastName = (lastNameState === "") ? null : lastNameState;
             const res = await axios.post(
-                "http://localhost:3999/api/auth/signup",
+                "https://localhost:3999/api/auth/signup",
                 {
                     email,
                     password,

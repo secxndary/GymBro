@@ -12,7 +12,7 @@ export default function WorkoutPage() {
     useEffect(() => {
         async function fetchWorkout() {
             const res = await axios.get(
-                `http://localhost:3999/api/workout/${workoutId}`, {
+                `https://localhost:3999/api/workout/${workoutId}`, {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
                 }
@@ -27,7 +27,7 @@ export default function WorkoutPage() {
 
     async function handleFinishWorkout() {
         const res = await axios.put(
-            `http://localhost:3999/api/workout/end`,
+            `https://localhost:3999/api/workout/end`,
             {
                 timeEnd: new Date().toISOString(),
                 workoutId: workout.id
@@ -40,11 +40,12 @@ export default function WorkoutPage() {
     }
 
 
+    
     return (
         <div>
             <h1>Workout</h1>
             <div>Started: {new Date(workout.timeStart).toLocaleString()}</div>
-            <div>Finished: {new Date(workout.timeEnd).toLocaleString()}</div>
+            <div>Finished: {workout.timeEnd ? new Date(workout.timeEnd).toLocaleString() : "In progress"}</div>
             <br />
             <button onClick={handleFinishWorkout}>Finish workout</button>
         </div>

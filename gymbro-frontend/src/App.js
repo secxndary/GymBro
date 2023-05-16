@@ -4,6 +4,7 @@ import SignInPage from './auth/signin';
 import SignUpPage from './auth/signup';
 import HomePage from './home/home';
 import WorkoutPage from './workout/workout';
+import CreateRoutinePage from './routine/create-routine';
 
 
 function App() {
@@ -14,7 +15,8 @@ function App() {
                 <Route path='signin' element={<SignInPage />} />
                 <Route path='signup' element={<SignUpPage />} />
                 <Route path='home' element={<HomePage />} />
-                <Route path='workout/:workoutId' element={<WorkoutPage />} /> 
+                <Route path='create-routine' element={<CreateRoutinePage />} />
+                <Route path='workout/:workoutId' element={<WorkoutPage />} />
             </Routes>
         </BrowserRouter>
     );
