@@ -45,50 +45,51 @@ export default function SignUpPage() {
 
 
     return (
-        <div>
+        <div className="container mt-4">
             <h1>Sign Up page</h1>
             {
                 (error && Array.isArray(error)) ?
-                    error.map(err => (<p>{err}</p>)) :
-                    <p>{error}</p>
+                    error.map(err => (<p className="text-danger">{err}</p>)) :
+                    <p className="text-danger">{error}</p>
             }
             <form onSubmit={handleRegister}>
                 <label>
-                    Email:
+                    Email
                     <input
+                        className="form-control"
                         type="text"
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                     />
                 </label>
                 <br />
-                <br />
 
                 <label>
-                    Password:
+                    Password
                     <input
+                        className="form-control"
                         type="password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
                 </label>
                 <br />
-                <br />
 
                 <label>
-                    First Name:
+                    First Name
                     <input
+                        className="form-control"
                         type="text"
                         value={firstNameState}
                         onChange={e => setFirstName(e.target.value)}
                     />
                 </label>
                 <br />
-                <br />
 
                 <label>
-                    Last Name:
+                    Last Name
                     <input
+                        className="form-control"
                         type="text"
                         value={lastNameState}
                         onChange={e => setLastName(e.target.value)}
@@ -97,8 +98,16 @@ export default function SignUpPage() {
                 <br />
                 <br />
 
-                <button type="submit">Sign Up</button>
-                <button onClick={routeChange(`/signin`)}>Already have an account?</button>
+                <button
+                    className="btn btn-primary"
+                    type="submit">
+                    Sign Up
+                </button>
+                <button
+                    className="btn btn-secondary"
+                    onClick={routeChange(`/signin`)}>
+                    Already have an account?
+                </button>
             </form>
         </div>
     );

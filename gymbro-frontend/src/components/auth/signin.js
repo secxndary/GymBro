@@ -41,36 +41,52 @@ export default function SignInPage() {
     }
 
 
+
     return (
-        <div>
+        <div className="container mt-4">
             <h1>Sign In page</h1>
             {
                 (error && Array.isArray(error)) ?
-                    error.map(err => (<p>{err}</p>)) :
-                    <p>{error}</p>
+                    error.map(err => (<p className="text-danger">{err}</p>)) :
+                    <p className="text-danger">{error}</p>
             }
             <form onSubmit={handleLogin}>
-                <label>
-                    Email:
-                    <input
-                        type="text"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                    />
-                </label>
-                <br />
-                <br />
-                <label>
-                    Password:
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                    />
-                </label>
-                <br />
-                <button type="submit">Sign In</button>
-                <button onClick={routeChange(`/signup`)}>Create new account</button>
+                <div>
+                    <label>
+                        Email
+                        <input
+                            className="form-control"
+                            type="text"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                        />
+                    </label>
+                    <br />
+
+                    <label>
+                        Password
+                        <input
+                            className="form-control"
+                            type="password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                        />
+                    </label>
+                    <br />
+                    <br />
+
+                    <button
+                        className="btn btn-primary"
+                        type="submit">
+                        Sign In
+                    </button>
+                    <button
+                        className="btn btn-secondary"
+                        onClick={routeChange(`/signup`)}>
+                        Create new account
+                    </button>
+                </div>
+
             </form>
         </div>
     );
