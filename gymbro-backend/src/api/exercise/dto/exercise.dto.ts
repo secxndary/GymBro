@@ -6,12 +6,10 @@ export class ExerciseDto {
     @IsString()
     name: string;
 
-    // @IsNotEmpty()
-    // @IsString()
+    @IsString()
     image: string;
 
-    // @IsNotEmpty()
-    // @IsString()
+    @IsString()
     technique: string;
 
     @IsNotEmpty()

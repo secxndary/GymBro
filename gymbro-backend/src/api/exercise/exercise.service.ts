@@ -21,12 +21,19 @@ export class ExerciseService {
         user: User
     ) {
         const { name, image, technique, muscleGroupId } = dto;
+        const exerciseExists = await this.prisma.exercise.findFirst({ where: { name } });
+        const muscleGroupExists = await this.prisma.muscleGroup.findFirst({ where: { id: muscleGroupId } });
+        if (exerciseExists)
+            throw new ConflictException('There is already an exercise with such name');
+        if (!muscleGroupExists)
+            throw new NotFoundException('There is no muscle group with such id');
+
         const exercise = await this.prisma.exercise.create({
             data: {
                 id: uuidv4(),
                 name: name,
-                image: image,
-                technique: technique,
+                image: image != "" ? image : null,
+                technique: technique != "" ? technique : null,
                 muscleGroupId: muscleGroupId
             }
         });
