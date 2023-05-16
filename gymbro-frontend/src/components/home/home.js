@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import NavBar from "../navbar";
 const accessToken = localStorage.getItem("access_token");
 
 
@@ -61,6 +62,7 @@ export default function HomePage() {
 
     return (
         <div>
+            <NavBar />
             <h1>My Routines</h1>
             <RoutineList routines={routines} />
         </div>

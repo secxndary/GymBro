@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import SignInPage from './components/auth/signin';
+import SignUpPage from './components/auth/signup';
+import HomePage from './components/home/home';
+import WorkoutPage from './components/workout/workout';
+import CreateRoutinePage from './components/routine/create-routine';
 import './App.css';
-import SignInPage from './auth/signin';
-import SignUpPage from './auth/signup';
-import HomePage from './home/home';
-import WorkoutPage from './workout/workout';
-import CreateRoutinePage from './routine/create-routine';
+import './bootstrap.css';
 
 
 function App() {

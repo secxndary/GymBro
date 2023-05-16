@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import NavBar from "../navbar";
 
 
 
@@ -43,6 +44,7 @@ export default function WorkoutPage() {
     
     return (
         <div>
+            <NavBar />
             <h1>Workout</h1>
             <div>Started: {new Date(workout.timeStart).toLocaleString()}</div>
             <div>Finished: {workout.timeEnd ? new Date(workout.timeEnd).toLocaleString() : "In progress"}</div>
