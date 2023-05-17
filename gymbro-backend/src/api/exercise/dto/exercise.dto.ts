@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { IsEmpty, IsNotEmpty, IsString, IsUUID } from "class-validator";
 
 export class ExerciseDto {
 
@@ -6,7 +6,8 @@ export class ExerciseDto {
     @IsString()
     name: string;
 
-    @IsString()
+    @IsEmpty()
+    // @IsNotEmpty()
     image: string;
 
     @IsString()
