@@ -9,9 +9,8 @@ const accessToken = localStorage.getItem("access_token");
 export default function HomePage() {
     const [routines, setRoutines] = useState([]);
 
-
     let navigate = useNavigate();
-    const changePathWorkout = routineId => event => {
+    const changePathWorkout = routineId => {
         startWorkout(routineId)
             .then(res => {
                 const { id } = res;
@@ -22,6 +21,41 @@ export default function HomePage() {
 
     const changePathNewRoutine = () => {
         navigate(`/create-routine`);
+    }
+
+
+
+    async function startWorkout(routineId) {
+        const res = await axios.post(
+            `https://localhost:3999/api/workout/start`,
+            {
+                timeStart: new Date().toISOString(),
+                routineId: routineId
+            },
+            {
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            }
+        );
+        const { data } = res;
+        console.log('data', data)
+        return data;
+    }
+
+
+
+    const deleteRoutine = routineId => {
+        axios.delete(
+            `https://localhost:3999/api/routine/delete/${routineId}`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then(res => {
+            setRoutines((prevRoutines) =>
+                prevRoutines.filter((routine) => routine.id !== routineId)
+            );
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
 
@@ -50,9 +84,15 @@ export default function HomePage() {
                         <h3 className="mt-4">{routine.title}</h3>
                         <button
                             className="btn btn-dark"
-                            onClick={changePathWorkout(routine.id)}>
+                            onClick={() => changePathWorkout(routine.id)}>
                             Start Routine
                         </button>
+                        <button
+                            className="btn btn-secondary ms-3"
+                            onClick={() => deleteRoutine(routine.id)}>
+                            Delete Routine
+                        </button>
+
                     </div>
                 ))}
                 <br />
@@ -75,24 +115,4 @@ export default function HomePage() {
             </div>
         </div>
     );
-}
-
-
-
-
-
-async function startWorkout(routineId) {
-    const res = await axios.post(
-        `https://localhost:3999/api/workout/start`,
-        {
-            timeStart: new Date().toISOString(),
-            routineId: routineId
-        },
-        {
-            headers: { 'Authorization': `Bearer ${accessToken}` }
-        }
-    );
-    const { data } = res;
-    console.log('data', data)
-    return data;
 }

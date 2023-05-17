@@ -83,7 +83,7 @@ model Workout {
     photo     String?
     //
     routineId String    @map("routine_id")
-    routine   Routine?  @relation(fields: [routineId], references: [id])
+    routine   Routine?  @relation(fields: [routineId], references: [id], onDelete: Cascade)
     session   Session[]
 
     @@map("workouts")
@@ -134,7 +134,7 @@ model BodyMeasurement {
     thighs       Float?
     calves       Float?
     //
-    user         User?  @relation(fields: [userId], references: [id])
+    user         User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@map("body_measurements")
 }

@@ -39,6 +39,15 @@ export class RoutineController {
     }
 
 
+    @Get('get-by-id/:id')
+    getRoutineById(
+        @Param('id') id: string,
+        @GetUser() user: User,
+    ) {
+        return this.routineService.getRoutineById(id, user);
+    }
+
+
     @Post('create')
     createRoutine(
         @Body() dto: RoutineDto,
@@ -53,9 +62,6 @@ export class RoutineController {
         @Body() dto: RoutineWithExercisesDto,
         @GetUser() user: User
     ) {
-        console.log({ dto });
-        console.log( dto.exercises[0] )
-        console.log( dto.exercises[1] )
         return this.routineService.createRoutineWithExercises(dto, user);
     }
 

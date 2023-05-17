@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router";
 import axios from "axios";
 import NavBar from "../navbar";
 const accessToken = localStorage.getItem("access_token");
@@ -12,6 +13,7 @@ export default function CreateRoutinePage() {
     const [title, setTitle] = useState("");
     const [error, setError] = useState(null);
     const selectRef = useRef(null);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -72,6 +74,7 @@ export default function CreateRoutinePage() {
                 });
             const { data } = res;
             console.log(data);
+            navigate('/home');
         } catch (err) {
             console.log(err);
             const errorMessage = err.response ? err.response.data.message : err.message;
@@ -90,17 +93,38 @@ export default function CreateRoutinePage() {
                 <h1>Create new routine</h1>
 
                 {/* Ввод названия тренировки */}
-                <div class="form-floating">
-                    <input type="text"
-                        className="form-control mt-3 mb-4"
-                        id="floatingRoutineTitle"
-                        value={title}
-                        style={{ maxWidth: '300px' }}
-                        onChange={e => setTitle(e.target.value)}
-                        placeholder="Routine title"
-                    />
-                    <label for="floatingRoutineTitle">Routine title</label>
-                </div>
+                {error ?
+                    (
+                        <div class="form-group has-danger">
+                            <label className="form-label mt-3" for="inputInvalid">Routine title</label>
+                            <input
+                                className="form-control is-invalid"
+                                id="inputInvalid"
+                                type="text"
+                                value={title}
+                                style={{ maxWidth: '300px' }}
+                                onChange={e => setTitle(e.target.value)}
+                                placeholder="e.g. Chest + Triceps"
+                            />
+                            <div className="invalid-feedback">{error}</div>
+                        </div>
+                    )
+                    :
+                    (
+                        <div class="form-group">
+                            <label className="form-label mt-3" for="inputValid">Routine title</label>
+                            <input
+                                className="form-control"
+                                id="inputValid"
+                                type="text"
+                                value={title}
+                                style={{ maxWidth: '300px' }}
+                                onChange={e => setTitle(e.target.value)}
+                                placeholder="e.g. Chest + Triceps"
+                            />
+                        </div>
+                    )}
+
 
 
                 {/* Уже добавленные в тренировку упражнения */}
@@ -140,7 +164,7 @@ export default function CreateRoutinePage() {
 
                 {/* Кнопка создания тренировки*/}
                 <button
-                    className="btn btn-primary fs-3 mt-4 col-md-3   "
+                    className="btn btn-primary btn-lg mt-4 col-md-3   "
                     style={{ maxWidth: '400px' }}
                     onClick={createRoutine}>
                     Create routine

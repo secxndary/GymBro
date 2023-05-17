@@ -16,7 +16,6 @@ export class RoutineService {
     }
 
 
-
     async getRoutines(user: User) {
         const routines = await this.prisma.routine.findMany({
             where: { userId: user.id },
@@ -29,6 +28,13 @@ export class RoutineService {
         return routines;
     }
 
+
+    async getRoutineById(id: string, user: User) {
+        const routine = await this.prisma.routine.findUnique({
+            where: { id }
+        });
+        return routine;
+    }
 
 
     async createRoutine(
@@ -118,7 +124,7 @@ export class RoutineService {
         });
 
         if (userHasRoutine) {
-            throw new ConflictException('This user already has a routine with this name');
+            throw new ConflictException('You already have a routine with this name');
         }
 
 
