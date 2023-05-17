@@ -3,6 +3,7 @@ import { User } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { RoutineDto, RoutineUpdateDto } from './dto';
 import { v4 as uuidv4 } from 'uuid';
+import { RoutineWithExercisesDto } from './dto/routine-with-exercises.dto';
 
 
 @Injectable()
@@ -13,6 +14,7 @@ export class RoutineService {
     async getAllRoutines() {
         return await this.prisma.routine.findMany();
     }
+
 
 
     async getRoutines(user: User) {
@@ -26,6 +28,7 @@ export class RoutineService {
         });
         return routines;
     }
+
 
 
     async createRoutine(
@@ -57,6 +60,7 @@ export class RoutineService {
     }
 
 
+
     async updateRoutine(
         id: string,
         dto: RoutineUpdateDto,
@@ -82,6 +86,7 @@ export class RoutineService {
     }
 
 
+
     async deleteRoutine(
         id: string,
         user: User
@@ -100,5 +105,37 @@ export class RoutineService {
         });
 
         return routineToDelete;
+    }
+
+
+
+    async createRoutineWithExercises(dto: RoutineWithExercisesDto, user: User) {
+        const userHasRoutine = await this.prisma.routine.findFirst({
+            where: {
+                userId: user.id,
+                title: dto.title,
+            },
+        });
+
+        if (userHasRoutine) {
+            throw new ConflictException('This user already has a routine with this name');
+        }
+
+
+        const routine = await this.prisma.routine.create({
+            data: {
+                id: uuidv4(),
+                title: dto.title,
+                userId: user.id,
+                exercise: {
+                    connect: dto.exercises.map(exercise => ({ id: exercise.id }))
+                },
+            },
+            include: {
+                exercise: true,
+            },
+        });
+
+        return routine;
     }
 }
