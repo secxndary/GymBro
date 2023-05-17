@@ -9,7 +9,7 @@ const accessToken = localStorage.getItem("access_token");
 export default function AdminExercises() {
     const [exercises, setExercises] = useState([]);
     const [muscleGroups, setMuscleGroups] = useState([]);
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchData() {
@@ -49,9 +49,15 @@ export default function AdminExercises() {
         // ...
     }
 
+    function addExercise() {
+        navigate(`/admin/exercises/create`);
+    }
+
 
     return (
         <div>
+            <h1 className="mb-4">Exercises List</h1>
+            <button className="btn btn-primary fs-3 mb-5" onClick={addExercise} >Add exercise</button>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2  px" }}>
                 {exercises.map((exercise, index) => (
                     <div className="card border-primary mb-3" style={{ maxWidth: "90%" }} key={exercise.id}>

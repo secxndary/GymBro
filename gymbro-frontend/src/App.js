@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React from 'react';
+import './App.css';
+import './bootstrap.css';
 import SignInPage from './components/auth/signin';
 import SignUpPage from './components/auth/signup';
 import HomePage from './components/home/home';
@@ -7,9 +9,7 @@ import WorkoutPage from './components/workout/workout';
 import CreateRoutinePage from './components/routine/create-routine';
 import AdminDashboard from './components/admin/dashboard';
 import AdminExercises from './components/admin/exercises';
-import './App.css';
-import './bootstrap.css';
-
+import CreateExercise from './components/admin/create-exercise';
 
 
 
@@ -26,6 +26,7 @@ export default function App() {
                 <Route path='workout/:workoutId' element={<WorkoutPage />} />
                 <Route path='admin' element={<AdminDashboard />} />
                 <Route path='admin/exercises' element={<AdminExercises />} />
+                <Route path='admin/exercises/create' element={<CreateExercise />} />
             </Routes>
         </BrowserRouter>
     );

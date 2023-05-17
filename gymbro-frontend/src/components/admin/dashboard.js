@@ -32,8 +32,7 @@ export default function AdminDashboard() {
         <div>
             <NavBarAdmin />
             <div className="container mt-4">
-                <h1 className="mb-4">Exercises List</h1>
-                < AdminExercises />
+                <AdminExercises />
             </div>
         </div>
     );
