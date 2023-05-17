@@ -30,6 +30,12 @@ export class ExerciseController {
     }
 
 
+    @Get('get-by-id/:id')
+    getExerciseById(@Param('id') id: string) {
+        return this.exerciseService.getExerciseById(id);
+    }
+
+
     @UseGuards(RolesGuard)
     @Roles('ADMIN')
     @Post('create')
@@ -37,7 +43,6 @@ export class ExerciseController {
         @Body() dto: ExerciseDto,
         @GetUser() user: User
     ) {
-        console.log(dto)
         return this.exerciseService.createExercise(dto, user);
     }
 
@@ -47,10 +52,11 @@ export class ExerciseController {
     @Put('update/:id')
     updateExercise(
         @Param('id') id: string,
-        // @Body() dto: ExerciseUpdateDto,
+        @Body() dto: ExerciseDto,
         @GetUser() user: User
     ) {
-        // return this.exerciseService.updateExercise(id, dto, user);
+        console.log(dto);
+        return this.exerciseService.updateExercise(id, dto, user);
     }
 
 

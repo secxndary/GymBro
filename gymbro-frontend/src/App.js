@@ -10,6 +10,8 @@ import CreateRoutinePage from './components/routine/create-routine';
 import AdminDashboard from './components/admin/dashboard';
 import AdminExercises from './components/admin/exercises';
 import CreateExercise from './components/admin/create-exercise';
+import Error404 from './components/shared/error404';
+import UpdateExercise from './components/admin/update-exercise';
 
 
 
@@ -27,6 +29,8 @@ export default function App() {
                 <Route path='admin' element={<AdminDashboard />} />
                 <Route path='admin/exercises' element={<AdminExercises />} />
                 <Route path='admin/exercises/create' element={<CreateExercise />} />
+                <Route path='admin/exercises/update/:exerciseId' element={<UpdateExercise />} />
+                <Route path='*' element={<Error404 />} />
             </Routes>
         </BrowserRouter>
     );

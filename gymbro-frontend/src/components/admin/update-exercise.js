@@ -6,17 +6,20 @@ const accessToken = localStorage.getItem("access_token");
 
 
 
-export default function CreateExercise() {
+export default function UpdateExercise() {
+    const [exercise, setExercise] = useState(null);
     const [name, setName] = useState("");
     const [image, setImage] = useState(null);
     const [technique, setTechnique] = useState("");
     const [muscleGroups, setMuscleGroups] = useState([]);
     const [selectedMuscleGroup, setSelectedMuscleGroup] = useState("");
     const [error, setError] = useState(null);
+    const exerciseId = window.location.href.split('/')[6];
 
 
     useEffect(() => {
         fetchMuscleGroups();
+        fetchExercise();
     }, []);
 
 
@@ -38,12 +41,34 @@ export default function CreateExercise() {
 
 
 
+    const fetchExercise = async () => {
+        try {
+            const response = await axios.get(`https://localhost:3999/api/exercise/get-by-id/${exerciseId}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+            setExercise(response.data);
+            setName(response.data.name);
+            setTechnique(response.data.technique);
+            setSelectedMuscleGroup(response.data.muscleGroupId);
+        } catch (err) {
+            console.log(err);
+            const errorMessage = err.response ? err.response.data.message : err.message;
+            setError(errorMessage);
+        }
+    };
+
+
+    useEffect(() => {
+        console.log('exercise', exercise);
+    }, [exercise]);
+
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-
         try {
-            console.log(image);
-            await axios.post("https://localhost:3999/api/exercise/create",
+            await axios.put(`https://localhost:3999/api/exercise/update/${exerciseId}`,
                 {
                     name: name,
                     image: "",
@@ -81,7 +106,7 @@ export default function CreateExercise() {
         <div>
             <NavBar />
             <div className="container mt-5" style={{ "width": "30%" }}>
-                <h1>Create Exercise</h1>
+                <h1>Update Exercise</h1>
                 <form onSubmit={handleFormSubmit}>
                     {error ?
                         (
@@ -101,7 +126,7 @@ export default function CreateExercise() {
                         <label className="form-label">Image:</label>
                         <input className="form-control" type="file" onChange={(e) => setImage(e.target.files[0])} />
                     </div> */}
-                    
+
                     <div className="form-group mt-3">
                         <label className="form-label">Technique:</label>
                         <input className="form-control" type="text" value={technique} onChange={(e) => setTechnique(e.target.value)} />
@@ -117,7 +142,7 @@ export default function CreateExercise() {
                             ))}
                         </select>
                     </div>
-                    <button className="btn btn-primary btn-lg mt-3" type="submit" >Create Exercise</button>
+                    <button className="btn btn-info btn-lg mt-3" type="submit" >Update Exercise</button>
                     <button className="btn btn-secondary btn-lg mt-3 ms-3" onClick={dismiss}>Dismiss</button>
                 </form>
             </div>

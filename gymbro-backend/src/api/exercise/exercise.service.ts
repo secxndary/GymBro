@@ -15,6 +15,12 @@ export class ExerciseService {
     }
 
 
+    async getExerciseById(id: string) {
+        return await this.prisma.exercise.findUnique({
+            where: { id },
+        });
+    }
+
 
     async createExercise(
         dto: ExerciseDto,
@@ -42,29 +48,29 @@ export class ExerciseService {
 
 
 
-    // async updateExercise(
-    //     id: string,
-    //     // dto: ExerciseUpdateDto,
-    //     user: User
-    // ) {
-    //     const exerciseToUpdate = await this.prisma.exercise.findFirst({
-    //         where: {
-    //             id: id,
-    //             userId: user.id
-    //         }
-    //     });
-    //     if (!exerciseToUpdate)
-    //         throw new NotFoundException('This user does not have a exercise with such id');
+    async updateExercise(
+        id: string,
+        dto: ExerciseDto,
+        user: User
+    ) {
+        const exerciseToUpdate = await this.prisma.exercise.findFirst({
+            where: { id }
+        });
+        if (!exerciseToUpdate)
+            throw new NotFoundException('This user does not have a exercise with such id');
 
-    //     const exerciseUpdated = await this.prisma.exercise.update({
-    //         where: { id: id },
-    //         data: {
-    //             title: dto.title
-    //         }
-    //     });
+        const exerciseUpdated = await this.prisma.exercise.update({
+            where: { id: id },
+            data: {
+                name: dto.name,
+                image: dto.image != "" ? dto.image : null,
+                technique: dto.technique != "" ? dto.technique : null,
+                muscleGroupId: dto.muscleGroupId
+            }
+        });
 
-    //     return exerciseUpdated;
-    // }
+        return exerciseUpdated;
+    }
 
 
 

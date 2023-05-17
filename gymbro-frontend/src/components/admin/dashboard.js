@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import NavBarAdmin from "../shared/navbar-admin";
@@ -20,7 +20,7 @@ export default function AdminDashboard() {
                     'Authorization': `Bearer ${accessToken}`
                 }
             })
-            const { data } = res;
+            // const { data } = res;
         }
         fetchRoutines();
     }, []);

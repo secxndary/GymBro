@@ -11,6 +11,7 @@ export default function AdminExercises() {
     const [muscleGroups, setMuscleGroups] = useState([]);
     const navigate = useNavigate();
 
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -36,18 +37,27 @@ export default function AdminExercises() {
         }
 
         fetchData();
-    }, []);
+    }, [exercises]);
+
 
 
     function handleEdit(exerciseId) {
-        // Обработчик редактирования упражнения
-        // ...
+        navigate(`/admin/exercises/update/${exerciseId}`)
     }
 
-    function handleDelete(exerciseId) {
-        // Обработчик удаления упражнения
-        // ...
+
+    async function handleDelete(exerciseId) {
+        try {
+            await axios.delete(`https://localhost:3999/api/exercise/delete/${exerciseId}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+        } catch (err) {
+            console.error(`Failed to delete exercise with ID ${exerciseId}.`, err);
+        }
     }
+
 
     function addExercise() {
         navigate(`/admin/exercises/create`);
@@ -67,7 +77,7 @@ export default function AdminExercises() {
                                 <h3>{exercise.name}</h3>
                                 <p>Technique: {exercise.technique}</p>
                                 <p>Muscle Group: {muscleGroups.find((group) => group.id === exercise.muscleGroupId) && muscleGroups.find((group) => group.id === exercise.muscleGroupId).name}</p>
-                                <button className="btn btn-info fs-5" onClick={() => handleEdit(exercise.id)}>Edit</button>
+                                <button className="btn btn-info fs-5" onClick={() => handleEdit(exercise.id)}>Update</button>
                                 <button className="btn btn-secondary ms-3 fs-5" onClick={() => handleDelete(exercise.id)}>Delete</button>
                             </div>
                         </div>
