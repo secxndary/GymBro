@@ -6,11 +6,15 @@ import HomePage from './components/home/home';
 import WorkoutPage from './components/workout/workout';
 import CreateRoutinePage from './components/routine/create-routine';
 import AdminDashboard from './components/admin/dashboard';
+import AdminExercises from './components/admin/exercises';
 import './App.css';
 import './bootstrap.css';
 
 
-function App() {
+
+
+
+export default function App() {
     return (
         <BrowserRouter>
             <Routes>
@@ -21,9 +25,8 @@ function App() {
                 <Route path='create-routine' element={<CreateRoutinePage />} />
                 <Route path='workout/:workoutId' element={<WorkoutPage />} />
                 <Route path='admin' element={<AdminDashboard />} />
+                <Route path='admin/exercises' element={<AdminExercises />} />
             </Routes>
         </BrowserRouter>
     );
 }
-
-export default App;

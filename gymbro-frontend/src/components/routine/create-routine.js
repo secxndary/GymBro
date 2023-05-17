@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import NavBar from "../navbar";
+import NavBar from "../shared/navbar-user";
 const accessToken = localStorage.getItem("access_token");
 
 

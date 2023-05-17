@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import NavBar from "../navbar";
+import NavBar from "../shared/navbar-user";
 const accessToken = localStorage.getItem("access_token");
 
 
@@ -88,7 +88,7 @@ export default function HomePage() {
                             Start Routine
                         </button>
                         <button
-                            className="btn btn-secondary ms-3"
+                            className="btn btn-secondary ms-2"
                             onClick={() => deleteRoutine(routine.id)}>
                             Delete Routine
                         </button>

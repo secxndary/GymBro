@@ -10,6 +10,7 @@ import { WorkoutController } from './api/workout/workout.controller';
 import { WorkoutService } from './api/workout/workout.service';
 import { WorkoutModule } from './api/workout/workout.module';
 import { SessionModule } from './api/session/session.module';
+import { MuscleGroupModule } from './api/muscle-group/muscle-group.module';
 
 
 @Module({
@@ -23,6 +24,7 @@ import { SessionModule } from './api/session/session.module';
         ExerciseModule,
         WorkoutModule,
         SessionModule,
+        MuscleGroupModule,
     ],
     // controllers: [WorkoutController],
     // providers: [WorkoutService],

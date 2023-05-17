@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import NavBar from "../navbar";
+import NavBarAdmin from "../shared/navbar-admin";
+import AdminExercises from "./exercises";
 const accessToken = localStorage.getItem("access_token");
 
 
 
 export default function AdminDashboard() {
-    
+
     let navigate = useNavigate();
 
 
@@ -29,10 +30,10 @@ export default function AdminDashboard() {
 
     return (
         <div>
-            <NavBar />
+            <NavBarAdmin />
             <div className="container mt-4">
-                <h1 className="mb-4">Admin dashboard</h1>
-
+                <h1 className="mb-4">Exercises List</h1>
+                < AdminExercises />
             </div>
         </div>
     );

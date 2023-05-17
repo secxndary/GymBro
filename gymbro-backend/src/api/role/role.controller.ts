@@ -26,6 +26,11 @@ export class RoleController {
         return this.roleService.getRoleByName(roleName);
     }
 
+    @Get('get-id-by-name/:name')
+    async getRoleIdByName(@Param('name') roleName: string) {
+        return this.roleService.getRoleIdByName(roleName);
+    }
+
     @Get('get-by-id/:id')
     async getRoleById(@Param('id') id: string) {
         return this.roleService.getRoleById(id);
