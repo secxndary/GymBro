@@ -164,7 +164,7 @@ export default function CreateRoutinePage() {
 
                 {/* Кнопка создания тренировки*/}
                 <button
-                    className="btn btn-primary btn-lg mt-4 col-md-3   "
+                    className="btn btn-primary btn-lg mt-4 col-md-3"
                     style={{ maxWidth: '400px' }}
                     onClick={createRoutine}>
                     Create routine

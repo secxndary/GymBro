@@ -21,11 +21,16 @@ export class RoleController {
         return this.roleService.getRoles();
     }
 
-    @Get('/:name')
+    @Get('get-by-name/:name')
     async getRoleByName(@Param('name') roleName: string) {
         return this.roleService.getRoleByName(roleName);
     }
-    
+
+    @Get('get-by-id/:id')
+    async getRoleById(@Param('id') id: string) {
+        return this.roleService.getRoleById(id);
+    }
+   
     @UseGuards(RolesGuard)
     @Roles('ADMIN')
     @Post()

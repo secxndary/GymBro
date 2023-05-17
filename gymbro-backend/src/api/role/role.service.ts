@@ -8,9 +8,12 @@ export class RoleService {
 
     constructor(private prisma: PrismaService) { }
 
+
     async getRoles() {
-        return (await this.prisma.role.findMany()).sort((a, b) => a.id - b.id);
+        return (await this.prisma.role.findMany());
+        //.sort((a, b) => a.id - b.id)
     }
+
 
     async getRoleByName(name: string) {
         const role = await this.prisma.role.findUnique({
@@ -21,6 +24,18 @@ export class RoleService {
         else
             throw new NotFoundException(`Cannot find role with name = ${name}`)
     }
+
+
+    async getRoleById(id: string) {
+        const role = await this.prisma.role.findUnique({
+            where: { id }
+        });
+        if (role)
+            return role;
+        else
+            throw new NotFoundException(`Cannot find role with id = ${id}`)
+    }
+
 
     async createRole(dto: RoleDto) {
         const { name, description } = dto;

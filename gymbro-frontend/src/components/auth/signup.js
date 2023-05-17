@@ -104,7 +104,7 @@ export default function SignUpPage() {
                     Sign Up
                 </button>
                 <button
-                    className="btn btn-secondary"
+                    className="btn btn-secondary ms-3"
                     onClick={routeChange(`/signin`)}>
                     Already have an account?
                 </button>

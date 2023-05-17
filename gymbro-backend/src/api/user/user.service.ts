@@ -35,18 +35,19 @@ export class UserService {
 
 
     async getAllUsers(user: User) {
-        if (user.roleId === 2)
-            return this.prisma.user.findMany({
-                select: {
-                    id: true,
-                    email: true,
-                    // password: true,
-                    firstName: true,
-                    lastName: true,
-                    role: true
-                }
-            });
-        else
-            throw new ForbiddenException('You must be an admin to view this information');
+        // if (user.roleId === 2)
+        return this.prisma.user.findMany({
+            select: {
+                id: true,
+                email: true,
+                // password: true,
+                firstName: true,
+                lastName: true,
+                role: true
+            }
+        });
+        // else
+        //     throw new ForbiddenException('You must be an admin to view this information');
+        // }
     }
 }

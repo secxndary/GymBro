@@ -1,140 +1,130 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Role {
-    id          Int     @id @default(autoincrement())
-    name        String  @unique
-    description String?
-    users       User[]
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String?
+  users       User[]
 
-    @@map("roles")
+  @@map("roles")
 }
 
 model MuscleGroup {
-    id       String     @id @default(uuid())
-    name     String     @unique
-    exercise Exercise[]
+  id       String     @id @default(uuid())
+  name     String     @unique
+  exercise Exercise[]
 
-    @@map("muscle_groups")
+  @@map("muscle_groups")
 }
 
 model SetType {
-    id          Int     @id @default(autoincrement())
-    name        String
-    description String?
-    set         Set[]
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  set         Set[]
 
-    @@map("set_types")
+  @@map("set_types")
 }
 
 model User {
-    id              String            @id @default(uuid())
-    email           String            @unique
-    password        String
-    //
-    firstName       String?           @map("first_name")
-    lastName        String?           @map("last_name")
-    //
-    roleId          Int               @map("role_id")
-    role            Role              @relation(fields: [roleId], references: [id])
-    routine         Routine[]
-    BodyMeasurement BodyMeasurement[]
+  id              String            @id @default(uuid())
+  email           String            @unique
+  password        String
+  firstName       String?           @map("first_name")
+  lastName        String?           @map("last_name")
+  roleId          String            @map("role_id")
+  BodyMeasurement BodyMeasurement[]
+  routine         Routine[]
+  role            Role              @relation(fields: [roleId], references: [id])
 
-    @@map("users")
+  @@map("users")
 }
 
 model Exercise {
-    id            String       @id @default(uuid())
-    name          String       @unique
-    image         String?
-    technique     String?
-    //
-    muscleGroupId String       @map("muscle_group_id")
-    muscleGroup   MuscleGroup? @relation(fields: [muscleGroupId], references: [id])
-    session       Session[]
-    routine       Routine[]    @relation("exercises_to_routines")
+  id            String      @id @default(uuid())
+  name          String      @unique
+  image         String?
+  technique     String?
+  muscleGroupId String      @map("muscle_group_id")
+  muscleGroup   MuscleGroup @relation(fields: [muscleGroupId], references: [id])
+  session       Session[]
+  routine       Routine[]   @relation("exercises_to_routines")
 
-    @@map("exercises")
+  @@map("exercises")
 }
 
 model Routine {
-    id       String     @id @default(uuid())
-    title    String
-    userId   String     @map("user_id")
-    //
-    user     User?      @relation(fields: [userId], references: [id])
-    workout  Workout[]
-    exercise Exercise[] @relation("exercises_to_routines")
+  id       String     @id @default(uuid())
+  title    String
+  userId   String     @map("user_id")
+  user     User       @relation(fields: [userId], references: [id])
+  workout  Workout[]
+  exercise Exercise[] @relation("exercises_to_routines")
 
-    @@map("routines")
+  @@map("routines")
 }
 
 model Workout {
-    id        String    @id @default(uuid())
-    timeStart DateTime  @map("time_start") @db.Timestamptz()
-    timeEnd   DateTime? @map("time_end") @db.Timestamptz()
-    notes     String?
-    photo     String?
-    //
-    routineId String    @map("routine_id")
-    routine   Routine?  @relation(fields: [routineId], references: [id], onDelete: Cascade)
-    session   Session[]
+  id        String    @id @default(uuid())
+  notes     String?
+  photo     String?
+  routineId String    @map("routine_id")
+  timeStart DateTime  @map("time_start") @db.Timestamptz(6)
+  timeEnd   DateTime? @map("time_end") @db.Timestamptz(6)
+  session   Session[]
+  routine   Routine   @relation(fields: [routineId], references: [id], onDelete: Cascade)
 
-    @@map("workouts")
+  @@map("workouts")
 }
 
 model Session {
-    id         String    @id @default(uuid())
-    exerciseId String    @map("exercise_id")
-    workoutId  String    @map("workout_id")
-    //
-    exercise   Exercise? @relation(fields: [exerciseId], references: [id])
-    workout    Workout?  @relation(fields: [workoutId], references: [id])
-    set        Set[]
+  id         String   @id @default(uuid())
+  exerciseId String   @map("exercise_id")
+  workoutId  String   @map("workout_id")
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+  workout    Workout  @relation(fields: [workoutId], references: [id])
+  set        Set[]
 
-    @@map("sessions")
+  @@map("sessions")
 }
 
 model Set {
-    id             String   @id @default(uuid())
-    sessionId      String   @map("session_id")
-    setTypeId      Int      @map("set_type_id")
-    //
-    sequenceNumber Int      @default(1) @map("sequence_number")
-    weight         Float
-    repsCount      Int      @map("reps_count")
-    isCompleted    Boolean  @default(false) @map("is_completed")
-    //
-    session        Session? @relation(fields: [sessionId], references: [id])
-    setType        SetType? @relation(fields: [setTypeId], references: [id])
+  id             String  @id @default(uuid())
+  weight         Float
+  isCompleted    Boolean @default(false) @map("is_completed")
+  repsCount      Int     @map("reps_count")
+  sequenceNumber Int     @default(1) @map("sequence_number")
+  sessionId      String  @map("session_id")
+  setTypeId      Int     @map("set_type_id")
+  session        Session @relation(fields: [sessionId], references: [id])
+  setType        SetType @relation(fields: [setTypeId], references: [id])
 
-    @@map("sets")
+  @@map("sets")
 }
 
 model BodyMeasurement {
-    id           String @id @default(uuid())
-    userId       String @map("user_id")
-    //
-    weight       Float?
-    height       Float?
-    chest        Float?
-    neck         Float?
-    shoulders    Float?
-    leftBicep    Float? @map("left_bicep")
-    rightBicep   Float? @map("right_bicep")
-    leftForearm  Float? @map("left_forearm")
-    rightForearm Float? @map("right_forearm")
-    waist        Float?
-    thighs       Float?
-    calves       Float?
-    //
-    user         User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String @id @default(uuid())
+  weight       Float?
+  height       Float?
+  chest        Float?
+  neck         Float?
+  shoulders    Float?
+  waist        Float?
+  thighs       Float?
+  calves       Float?
+  leftBicep    Float? @map("left_bicep")
+  leftForearm  Float? @map("left_forearm")
+  rightBicep   Float? @map("right_bicep")
+  rightForearm Float? @map("right_forearm")
+  userId       String @map("user_id")
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@map("body_measurements")
+  @@map("body_measurements")
 }

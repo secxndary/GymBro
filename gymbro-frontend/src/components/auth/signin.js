@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 
@@ -6,6 +6,8 @@ import axios from "axios";
 export default function SignInPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [user, setUser] = useState(null);
+    const [role, setRole] = useState(null);
     const [error, setError] = useState(null);
 
 
@@ -30,8 +32,32 @@ export default function SignInPage() {
 
             localStorage.setItem("access_token", data.access_token);
             console.log(localStorage.getItem("access_token"))
+            const userRes = await axios.get("https://localhost:3999/api/users/me", {
+                headers: {
+                    Authorization: `Bearer ${data.access_token}`,
+                },
+            });
 
-            navigate('/home');
+            setUser(userRes.data);
+            console.log('get users me', userRes.data);
+            console.log('roleId', userRes.data.roleId);
+
+            const roleRes = await axios.get(`https://localhost:3999/api/role/get-by-id/${userRes.data.roleId}`, {
+                headers: {
+                    Authorization: `Bearer ${data.access_token}`,
+                },
+            });
+            setRole(roleRes.data);
+
+
+            // useEffect(() => {
+            if (role) {
+                if (role.name === 'ADMIN')
+                    navigate('/admin');
+                else
+                    navigate('/home');
+            }
+            // }, [role]);
         } catch (err) {
             console.log(err);
             const errorMessage = err.response ? err.response.data.message : err.message;
@@ -82,7 +108,7 @@ export default function SignInPage() {
                         Sign In
                     </button>
                     <button
-                        className="btn btn-secondary"
+                        className="btn btn-secondary ms-3"
                         onClick={routeChange(`/signup`)}>
                         Create new account
                     </button>

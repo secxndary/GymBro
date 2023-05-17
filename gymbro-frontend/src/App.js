@@ -5,6 +5,7 @@ import SignUpPage from './components/auth/signup';
 import HomePage from './components/home/home';
 import WorkoutPage from './components/workout/workout';
 import CreateRoutinePage from './components/routine/create-routine';
+import AdminDashboard from './components/admin/dashboard';
 import './App.css';
 import './bootstrap.css';
 
@@ -19,6 +20,7 @@ function App() {
                 <Route path='home' element={<HomePage />} />
                 <Route path='create-routine' element={<CreateRoutinePage />} />
                 <Route path='workout/:workoutId' element={<WorkoutPage />} />
+                <Route path='admin' element={<AdminDashboard />} />
             </Routes>
         </BrowserRouter>
     );
