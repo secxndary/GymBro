@@ -24,15 +24,6 @@ model MuscleGroup {
   @@map("muscle_groups")
 }
 
-model SetType {
-  id          Int     @id @default(autoincrement())
-  name        String
-  description String?
-  set         Set[]
-
-  @@map("set_types")
-}
-
 model User {
   id              String            @id @default(uuid())
   email           String            @unique
@@ -54,8 +45,8 @@ model Exercise {
   technique     String?
   muscleGroupId String      @map("muscle_group_id")
   muscleGroup   MuscleGroup @relation(fields: [muscleGroupId], references: [id])
-  session       Session[]
   routine       Routine[]   @relation("exercises_to_routines")
+  set           Set[]
 
   @@map("exercises")
 }
@@ -78,33 +69,18 @@ model Workout {
   routineId String    @map("routine_id")
   timeStart DateTime  @map("time_start") @db.Timestamptz(6)
   timeEnd   DateTime? @map("time_end") @db.Timestamptz(6)
-  session   Session[]
+  set       Set[]
   routine   Routine   @relation(fields: [routineId], references: [id], onDelete: Cascade)
 
   @@map("workouts")
 }
 
-model Session {
+model Set {
   id         String   @id @default(uuid())
   exerciseId String   @map("exercise_id")
   workoutId  String   @map("workout_id")
   exercise   Exercise @relation(fields: [exerciseId], references: [id])
   workout    Workout  @relation(fields: [workoutId], references: [id])
-  set        Set[]
-
-  @@map("sessions")
-}
-
-model Set {
-  id             String  @id @default(uuid())
-  weight         Float
-  isCompleted    Boolean @default(false) @map("is_completed")
-  repsCount      Int     @map("reps_count")
-  sequenceNumber Int     @default(1) @map("sequence_number")
-  sessionId      String  @map("session_id")
-  setTypeId      Int     @map("set_type_id")
-  session        Session @relation(fields: [sessionId], references: [id])
-  setType        SetType @relation(fields: [setTypeId], references: [id])
 
   @@map("sets")
 }

@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NavBar from "../shared/navbar-user";
 const accessToken = localStorage.getItem("access_token");
@@ -9,7 +8,9 @@ const accessToken = localStorage.getItem("access_token");
 export default function UserPage() {
     const [user, setUser] = useState(null);
     const [workouts, setWorkouts] = useState([]);
-
+    const [firstNameState, setFirstName] = useState("");
+    const [lastNameState, setLastName] = useState("");
+    const [error, setError] = useState(null);
 
 
     useEffect(() => {
@@ -23,6 +24,8 @@ export default function UserPage() {
             );
             const { data } = res;
             setUser(data);
+            setFirstName(data.firstName);
+            setLastName(data.lastName);
         }
 
         async function fetchWorkouts() {
@@ -45,17 +48,34 @@ export default function UserPage() {
 
 
     const handleUpdateUser = async () => {
-        // Логика для обновления пользователя через API
-        // Используйте значения полей email, firstName, lastName, role из состояния
+        var firstName = (firstNameState === "") ? undefined : firstNameState;
+        var lastName = (lastNameState === "") ? undefined : lastNameState;
+        try {
+            const res = await axios.put(
+                "https://localhost:3999/api/users/update",
+                {
+                    firstName: firstName,
+                    lastName: lastName
+                },
+                {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                }
+            );
+
+        }
+        catch (err) {
+            console.log(err);
+            const errorMessage = err.response ? err.response.data.message : err.message;
+            setError(errorMessage);
+        }
     };
 
-    const handleLogout = () => {
-        // Логика для выхода из аккаунта
-    };
 
-    const handleDeleteProfile = () => {
-        // Логика для удаления профиля
-    };
+    
+    function handleLogout() {
+        localStorage.removeItem("access_token");
+        navigate('/');
+    }
 
 
     if (!user) {
@@ -74,8 +94,14 @@ export default function UserPage() {
             <div className="container">
                 <h1 className="mt-4">Hello, Gym Bro!</h1>
 
-                <form>
-                    <label>Email
+                <form onSubmit={handleUpdateUser}>
+                    {
+                        (error && Array.isArray(error)) ?
+                            error.map(err => (<p className="text-danger">{err}</p>)) :
+                            <p className="text-danger">{error}</p>
+                    }
+                    <label>
+                        Email
                         <input
                             className="form-control mb-2"
                             type="email"
@@ -85,20 +111,24 @@ export default function UserPage() {
                     </label>
                     <br />
 
-                    <label>First Name
+                    <label>
+                        First Name
                         <input
                             className="form-control mb-2"
                             type="text"
-                            value={user.firstName}
+                            placeholder={firstNameState}
+                            onChange={e => setFirstName(e.target.value)}
                         />
                     </label>
                     <br />
 
-                    <label>Last Name
+                    <label>
+                        Last Name
                         <input
                             className="form-control mb-2"
                             type="text"
-                            value={user.lastName}
+                            placeholder={lastNameState}
+                            onChange={e => setLastName(e.target.value)}
                         />
                     </label>
                     <br />
@@ -106,23 +136,17 @@ export default function UserPage() {
 
                     <button
                         className="btn btn-primary mt-2"
-                        type="button"
-                        onClick={handleUpdateUser}>
+                        type="submit"
+                    >
                         Update
                     </button>
                 </form>
 
                 <button
-                    className="btn btn-primary mt-2"
+                    className="btn btn-secondary mt-2"
                     type="button"
                     onClick={handleLogout}>
                     Log Out
-                </button>
-                <button
-                    className="btn btn-secondary ms-2 mt-2"
-                    type="button"
-                    onClick={handleDeleteProfile}>
-                    Delete Profile
                 </button>
 
 

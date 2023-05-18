@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 
 export default function NavBar({ user }) {
 
+    const navigate = useNavigate();
     function logout() {
-
+        localStorage.removeItem("access_token");
+        navigate('/');
     }
 
-    
+
     return (
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">

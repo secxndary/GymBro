@@ -1,6 +1,6 @@
 import { Injectable, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { MeasurementDto } from './dto';
+import { MeasurementDto, UserDto } from './dto';
 import { User } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -49,5 +49,15 @@ export class UserService {
         // else
         //     throw new ForbiddenException('You must be an admin to view this information');
         // }
+    }
+
+
+    async updateUser(user: User, dto: UserDto) {
+        return await this.prisma.user.update({
+            data: dto,
+            where: {
+                id: user.id
+            }
+        });
     }
 }

@@ -3,14 +3,15 @@ import {
     Get,
     Post,
     Body,
-    UseGuards
+    UseGuards,
+    Put
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { UserService } from './user.service';
 import { GetUser } from '../../auth/decorator';
 import { JwtGuard } from '../../auth/guard';
-import { MeasurementDto } from './dto';
 import { Roles } from '../../auth/decorator/auth-roles.decorator';
+import { MeasurementDto, UserDto } from './dto';
 
 
 @UseGuards(JwtGuard)
@@ -32,5 +33,10 @@ export class UserController {
     @Post('measurements')
     addMeasurements(@GetUser() user: User, @Body() dto: MeasurementDto) {
         return this.userService.addMeasurements(user, dto);
+    }
+
+    @Put('update')
+    updateUser(@GetUser() user: User, @Body() dto: UserDto) {
+        return this.userService.updateUser(user, dto);
     }
 }
