@@ -12,6 +12,8 @@ export default function UserPage() {
     const [firstNameState, setFirstName] = useState("");
     const [lastNameState, setLastName] = useState("");
     const [error, setError] = useState(null);
+    const totalWorkoutTime = workouts.reduce((total, workout) => total + (workout.duration || 0), 0);
+
 
 
     useEffect(() => {
@@ -35,10 +37,18 @@ export default function UserPage() {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
                 }
-            }
-            );
+            });
             const { data } = res;
             setWorkouts(data);
+
+            const workoutsWithDuration = data.map((workout) => {
+                const { timeStart, timeEnd } = workout;
+                if (timeStart && timeEnd) {
+                    const durationInMinutes = Math.round((timeEnd - timeStart) / (1000 * 60));
+                    return { ...workout, duration: durationInMinutes };
+                }
+            });
+            console.log(workoutsWithDuration);
         }
 
         fetchWorkouts();
@@ -70,6 +80,29 @@ export default function UserPage() {
             setError(errorMessage);
         }
     };
+
+
+
+
+    async function getTotalWorkoutTime(workoutId) {
+        try {
+            const res = await axios.get(`https://localhost:3999/api/set/get-by-workout/${workoutId}`, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            });
+            const { data } = res;
+            console.log(data);
+            const totalWorkoutTime = data.reduce((sum, set) => sum + set.elapsedSeconds, 0);
+            console.log(totalWorkoutTime);
+            return totalWorkoutTime;
+        } catch (error) {
+            console.error(error);
+            return 0;
+        }
+    }
+
+
 
 
     const navigate = useNavigate();
@@ -150,14 +183,15 @@ export default function UserPage() {
                     Log Out
                 </button>
 
-
                 <h2 className="mt-4">Workouts:</h2>
+                {/* <p>Total Workout Time: {totalWorkoutTime} minutes</p> */}
                 <ul>
                     {workouts.map((workout) => (
                         workout.timeEnd && (
                             <li key={workout.id}>
                                 <p>Start Time: {workout.timeStart ? new Date(workout.timeStart).toLocaleString() : "Not started"}</p>
                                 <p>End Time: {workout.timeEnd ? new Date(workout.timeEnd).toLocaleString() : "Not finished yet"}</p>
+                                {/* <p>Total Workout Time: {getTotalWorkoutTime(workout.id)} seconds</p> */}
                             </li>
                         )
                     ))}

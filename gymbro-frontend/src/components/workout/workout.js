@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NavBar from "../shared/navbar-user";
+import { useNavigate } from "react-router";
 
 
 
@@ -19,6 +20,8 @@ export default function WorkoutPage() {
 
     const accessToken = localStorage.getItem("access_token");
     const workoutId = window.location.href.split('/')[4];
+    const navigate = useNavigate();
+
     const totalTime = Object.values(completedTimes).reduce((acc, curr) => acc + curr, 0);
     const minutes = Math.floor(totalTime / 60);
     const seconds = totalTime % 60;
@@ -52,11 +55,11 @@ export default function WorkoutPage() {
                         'Authorization': `Bearer ${accessToken}`
                     }
                 })
-                
+
                 const filteredExercises = resExercises.data.filter((exercise) => {
                     return exercise.routine.some((routine) => routine.id === data.routineId);
                 });
-                
+
                 console.log(resExercises.data);
                 console.log(filteredExercises);
                 setExercises(filteredExercises);
@@ -113,13 +116,15 @@ export default function WorkoutPage() {
             });
         const { data } = res;
         setWorkout(data);
+
+        navigate("/home");
     }
 
 
 
 
     const handleStartExercise = (exerciseId) => {
-        const startTime = new Date().getTime(); // Получение текущего времени
+        const startTime = new Date().getTime(); 
         const newTimer = setInterval(() => {
             const currentTime = new Date().getTime();
             const elapsedSeconds = Math.floor((currentTime - startTime) / 1000);
@@ -127,10 +132,10 @@ export default function WorkoutPage() {
                 ...prevTimers,
                 [exerciseId]: elapsedSeconds,
             }));
-        }, 1000); // Обновление счетчика каждую секунду
+        }, 1000);
         setTimers((prevTimers) => ({
             ...prevTimers,
-            [exerciseId]: 0, // Начальное значение счетчика
+            [exerciseId]: 0, 
         }));
 
         setActiveExercises((prevActiveExercises) => ({

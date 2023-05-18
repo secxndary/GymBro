@@ -11,7 +11,6 @@ import { User } from '@prisma/client';
 import { SetService } from './set.service';
 import { GetUser } from '../../auth/decorator';
 import { JwtGuard } from '../../auth/guard';
-import { Roles } from '../../auth/decorator/auth-roles.decorator';
 import { SetDto } from './dto';
 
 
@@ -22,7 +21,7 @@ export class SetController {
     constructor(private setService: SetService) { }
 
 
-    @Get('get-by-workout')
+    @Get('get-by-workout/:id')
     async getSetsByWorkout(@GetUser() user: User, @Param('id') id: string) {
         return this.setService.getSetsByWorkout(user, id);
     }

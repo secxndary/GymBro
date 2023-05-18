@@ -56,9 +56,6 @@ export class ExerciseService {
                 },
             },
         });
-        console.log('');
-        console.log('');
-        console.log(exercises);
         return exercises;
     }
 
