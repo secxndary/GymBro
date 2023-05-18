@@ -69,7 +69,7 @@ export default function SignInPage() {
 
     return (
         <div className="container mt-4">
-            <h1>Sign In page</h1>
+            <h1>Sign In</h1>
             {
                 (error && Array.isArray(error)) ?
                     error.map(err => (<p className="text-danger">{err}</p>)) :

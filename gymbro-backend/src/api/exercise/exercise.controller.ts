@@ -55,7 +55,6 @@ export class ExerciseController {
         @Body() dto: ExerciseDto,
         @GetUser() user: User
     ) {
-        console.log(dto);
         return this.exerciseService.updateExercise(id, dto, user);
     }
 

@@ -37,7 +37,6 @@ export default function HomePage() {
             }
         );
         const { data } = res;
-        console.log('data', data)
         return data;
     }
 
