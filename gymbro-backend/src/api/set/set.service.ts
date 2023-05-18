@@ -31,8 +31,14 @@ export class SetService {
 
 
     async createSet(user: User, dto: SetDto) {
-        // const set = await this.prisma.set.create({
-
-        // });
+        const set = await this.prisma.set.create({
+            data: {
+                id: uuidv4(),
+                exerciseId: dto.exerciseId,
+                workoutId: dto.workoutId,
+                elapsedSeconds: dto.elapsedSeconds,
+            }
+        });
+        return set;
     }
 }

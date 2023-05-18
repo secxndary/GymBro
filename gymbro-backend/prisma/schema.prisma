@@ -76,11 +76,12 @@ model Workout {
 }
 
 model Set {
-  id         String   @id @default(uuid())
-  exerciseId String   @map("exercise_id")
-  workoutId  String   @map("workout_id")
-  exercise   Exercise @relation(fields: [exerciseId], references: [id])
-  workout    Workout  @relation(fields: [workoutId], references: [id])
+  id             String   @id @default(uuid())
+  elapsedSeconds Int      @map("elapsed_seconds")
+  exerciseId     String   @map("exercise_id")
+  workoutId      String   @map("workout_id")
+  exercise       Exercise @relation(fields: [exerciseId], references: [id])
+  workout        Workout  @relation(fields: [workoutId], references: [id])
 
   @@map("sets")
 }

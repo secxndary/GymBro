@@ -33,9 +33,9 @@ export class SetController {
         return this.setService.getSetById(user, id);
     }
 
-    
+
     @Post('create')
-    async createSet(@GetUser() user: User, dto : SetDto) {
+    async createSet(@GetUser() user: User, @Body() dto: SetDto) {
         return this.setService.createSet(user, dto);
     }
 }

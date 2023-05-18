@@ -180,7 +180,52 @@ export default function WorkoutPage() {
             clearInterval(timers[exerciseId]);
             delete timers[exerciseId];
         }
+
     };
+
+
+
+    useEffect(() => {
+        console.log(completedTimes);
+        const keys = Object.keys(completedTimes);
+        const lastKey = keys[keys.length - 1];
+        const lastValue = completedTimes[lastKey];
+
+        console.log('');
+        console.log('');
+        console.log('key', lastKey);
+        console.log('value', lastValue);
+
+        const sendSetData = async () => {
+            try {
+                console.log({
+                    exerciseId: lastKey,
+                    workoutId: workout.id,
+                    elapsedSeconds: lastValue,
+                });
+
+                const res = await axios.post(
+                    "https://localhost:3999/api/set/create",
+                    {
+                        exerciseId: lastKey,
+                        workoutId: workout.id,
+                        elapsedSeconds: lastValue,
+                    },
+                    {
+                        headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }
+                    }
+                );
+
+                console.log('res', res);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        if (lastKey) {
+            sendSetData();
+        }
+    }, [completedTimes]);
 
 
 
