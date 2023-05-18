@@ -2,6 +2,12 @@ import React from "react";
 
 
 export default function NavBar({ user }) {
+
+    function logout() {
+
+    }
+
+    
     return (
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
@@ -17,12 +23,12 @@ export default function NavBar({ user }) {
                             </a>
                         </li>
                         <li class="nav-item ms-4">
-                            <a class="nav-link active" href="/users/me">{(user.firstName && user.lastName) ? `${user.firstName} ${user.lastName}` : user.email}
+                            <a class="nav-link active" href="/me">{(user.firstName && user.lastName) ? `${user.firstName} ${user.lastName}` : user.email}
                                 <span class="visually-hidden">(current)</span>
                             </a>
                         </li>
                         <li class="nav-item ms-4">
-                            <a class="nav-link active" href="/users/me">Log out
+                            <a class="nav-link active" href="/" onClick={logout}>Log out
                                 <span class="visually-hidden">(current)</span>
                             </a>
                         </li>
