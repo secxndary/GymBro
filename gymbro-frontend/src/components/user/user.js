@@ -154,10 +154,12 @@ export default function UserPage() {
                 <h2 className="mt-4">Workouts:</h2>
                 <ul>
                     {workouts.map((workout) => (
-                        <li key={workout.id}>
-                            <p>Start Time: {workout.timeStart ? new Date(workout.timeStart).toLocaleString() : "Not started"}</p>
-                            <p>End Time: {workout.timeEnd ? new Date(workout.timeEnd).toLocaleString() : "Not finished yet"}</p>
-                        </li>
+                        workout.timeEnd && (
+                            <li key={workout.id}>
+                                <p>Start Time: {workout.timeStart ? new Date(workout.timeStart).toLocaleString() : "Not started"}</p>
+                                <p>End Time: {workout.timeEnd ? new Date(workout.timeEnd).toLocaleString() : "Not finished yet"}</p>
+                            </li>
+                        )
                     ))}
                 </ul>
             </div>

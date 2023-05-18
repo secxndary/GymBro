@@ -36,6 +36,18 @@ export class ExerciseController {
     }
 
 
+    @Get('get-by-workout/:id')
+    getExercisesByWorkoutId(@Param('id') id: string) {
+        return this.exerciseService.getExercisesByWorkoutId(id);
+    }
+
+
+    @Get('get-by-routine/:id')
+    getExercisesByRoutineId(@Param('id') id: string) {
+        return this.exerciseService.getExercisesByRoutineId(id);
+    }
+
+
     @UseGuards(RolesGuard)
     @Roles('ADMIN')
     @Post('create')

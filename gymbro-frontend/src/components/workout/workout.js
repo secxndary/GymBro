@@ -44,19 +44,36 @@ export default function WorkoutPage() {
                     }
                 });
                 setRoutine(resRoutine.data);
+
+
+                const resExercises = await axios.get(
+                    `https://localhost:3999/api/exercise/get-by-routine/${data.routineId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                
+                const filteredExercises = resExercises.data.filter((exercise) => {
+                    return exercise.routine.some((routine) => routine.id === data.routineId);
+                });
+                
+                console.log(resExercises.data);
+                console.log(filteredExercises);
+                setExercises(filteredExercises);
             }
         }
 
-        async function fetchExercises() {
-            const res = await axios.get(
-                "https://localhost:3999/api/exercise/get-all", {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            })
-            const { data } = res;
-            setExercises(data);
-        }
+        // async function fetchExercises() {
+        //     const res = await axios.get(
+        //         `https://localhost:3999/api/exercise/get-by-routine/${workout.routineId}`, {
+        //         headers: {
+        //             'Authorization': `Bearer ${accessToken}`
+        //         }
+        //     })
+        //     const { data } = res;
+        //     setExercises(data);
+        //     console.log(data);
+        // }
 
         async function fetchUser() {
             const res = await axios.get(
@@ -71,7 +88,6 @@ export default function WorkoutPage() {
 
         fetchWorkout();
         fetchUser();
-        fetchExercises();
     }, []);
 
 
@@ -186,15 +202,9 @@ export default function WorkoutPage() {
 
 
     useEffect(() => {
-        console.log(completedTimes);
         const keys = Object.keys(completedTimes);
         const lastKey = keys[keys.length - 1];
         const lastValue = completedTimes[lastKey];
-
-        console.log('');
-        console.log('');
-        console.log('key', lastKey);
-        console.log('value', lastValue);
 
         const sendSetData = async () => {
             try {
@@ -215,8 +225,6 @@ export default function WorkoutPage() {
                         headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }
                     }
                 );
-
-                console.log('res', res);
             } catch (error) {
                 console.error(error);
             }

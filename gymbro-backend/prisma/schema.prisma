@@ -33,7 +33,7 @@ model User {
   roleId          String            @map("role_id")
   BodyMeasurement BodyMeasurement[]
   routine         Routine[]
-  role            Role              @relation(fields: [roleId], references: [id])
+  role            Role              @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
   @@map("users")
 }
@@ -44,7 +44,7 @@ model Exercise {
   image         String?
   technique     String?
   muscleGroupId String      @map("muscle_group_id")
-  muscleGroup   MuscleGroup @relation(fields: [muscleGroupId], references: [id])
+  muscleGroup   MuscleGroup @relation(fields: [muscleGroupId], references: [id], onDelete: Cascade)
   routine       Routine[]   @relation("exercises_to_routines")
   set           Set[]
 
@@ -55,7 +55,7 @@ model Routine {
   id       String     @id @default(uuid())
   title    String
   userId   String     @map("user_id")
-  user     User       @relation(fields: [userId], references: [id])
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   workout  Workout[]
   exercise Exercise[] @relation("exercises_to_routines")
 
@@ -80,8 +80,8 @@ model Set {
   elapsedSeconds Int      @map("elapsed_seconds")
   exerciseId     String   @map("exercise_id")
   workoutId      String   @map("workout_id")
-  exercise       Exercise @relation(fields: [exerciseId], references: [id])
-  workout        Workout  @relation(fields: [workoutId], references: [id])
+  exercise       Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  workout        Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade)
 
   @@map("sets")
 }

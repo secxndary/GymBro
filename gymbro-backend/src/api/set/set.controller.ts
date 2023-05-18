@@ -22,9 +22,9 @@ export class SetController {
     constructor(private setService: SetService) { }
 
 
-    @Get('get-all-by-user')
-    async getSets(@GetUser() user: User) {
-        return this.setService.getSets(user);
+    @Get('get-by-workout')
+    async getSetsByWorkout(@GetUser() user: User, @Param('id') id: string) {
+        return this.setService.getSetsByWorkout(user, id);
     }
 
 

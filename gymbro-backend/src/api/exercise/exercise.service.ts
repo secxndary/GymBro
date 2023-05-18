@@ -22,6 +22,50 @@ export class ExerciseService {
     }
 
 
+    async getExercisesByWorkoutId(id: string) {
+        const exercises = await this.prisma.exercise.findMany({
+            include: {
+                routine: {
+                    include: {
+                        workout: {
+                            where: { id }
+                        }
+                    }
+                }
+            }
+        });
+        return exercises;
+    }
+
+
+
+    async getExercisesByRoutineId(id: string) {
+        const exercises = await this.prisma.exercise.findMany({
+            where: {
+                routine: {
+                    some: {
+                        id: id,
+                    },
+                },
+            },
+            include: {
+                routine: {
+                    where: {
+                        id: id,
+                    },
+                },
+            },
+        });
+        console.log('');
+        console.log('');
+        console.log(exercises);
+        return exercises;
+    }
+
+
+
+
+
     async createExercise(
         dto: ExerciseDto,
         user: User

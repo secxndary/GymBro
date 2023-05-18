@@ -11,13 +11,12 @@ export class SetService {
     constructor(private prisma: PrismaService) { }
 
 
-    async getSets(user: User) {
+    async getSetsByWorkout(user: User, workoutId: string) {
         const sets = await this.prisma.set.findMany({
             where: {
-
-            }
-        }
-        );
+                workoutId: workoutId,
+            },
+        });
         return sets;
     }
 
