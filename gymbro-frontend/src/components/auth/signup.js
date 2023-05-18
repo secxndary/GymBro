@@ -35,6 +35,8 @@ export default function SignUpPage() {
 
             localStorage.setItem("access_token", data.access_token);
             console.log(localStorage.getItem("access_token"))
+
+            navigate("/")
         } catch (err) {
             console.log(err);
             const errorMessage = err.response ? err.response.data.message : err.message;

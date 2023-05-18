@@ -61,7 +61,7 @@ export class AuthService {
 
         const passwordMatches = await argon.verify(user.password, dto.password);
         if (!passwordMatches)
-            throw new ForbiddenException('Passwords do not match');
+            throw new ForbiddenException('Incorrect password');
 
         return this.signToken(user.id, user.email, user.roleId);
     }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NavBar from "../shared/navbar-user";
+import { useNavigate } from "react-router";
 const accessToken = localStorage.getItem("access_token");
 
 
@@ -71,10 +72,10 @@ export default function UserPage() {
     };
 
 
-    
+    const navigate = useNavigate();
     function handleLogout() {
         localStorage.removeItem("access_token");
-        navigate('/');
+        navigate("/");
     }
 
 
@@ -101,7 +102,7 @@ export default function UserPage() {
                             <p className="text-danger">{error}</p>
                     }
                     <label>
-                        Email
+                        Your Email:
                         <input
                             className="form-control mb-2"
                             type="email"
