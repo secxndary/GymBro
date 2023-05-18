@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NavBar from "../shared/navbar-user";
-// import WorkoutExercises from "./workout-exercises";
 
 
 
@@ -9,14 +8,20 @@ export default function WorkoutPage() {
     const [workout, setWorkout] = useState([]);
     const [routine, setRoutine] = useState(null);
     const [exercises, setExercises] = useState([]);
-    const [timers, setTimers] = useState({}); // Локальное состояние для хранения таймеров
-    const [exerciseLogs, setExerciseLogs] = useState({}); // Локальное состояние для хранения отметок времени начала упражнений
+    const [timers, setTimers] = useState({});
+    const [exerciseLogs, setExerciseLogs] = useState({});
     const [isRender, setIsRender] = useState(true);
     const [activeExercises, setActiveExercises] = useState({});
     const [completedTimes, setCompletedTimes] = useState({});
     const [exerciseState, setExerciseState] = useState({});
+    const [activeExerciseId, setActiveExerciseId] = useState(null);
+
     const accessToken = localStorage.getItem("access_token");
     const workoutId = window.location.href.split('/')[4];
+    const totalTime = Object.values(completedTimes).reduce((acc, curr) => acc + curr, 0);
+    const minutes = Math.floor(totalTime / 60);
+    const seconds = totalTime % 60;
+
 
 
     useEffect(() => {
@@ -55,6 +60,14 @@ export default function WorkoutPage() {
         fetchWorkout();
         fetchExercises();
     }, []);
+
+
+
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes} min ${remainingSeconds} seconds`;
+    }
 
 
 
@@ -109,8 +122,10 @@ export default function WorkoutPage() {
             }
         }));
 
+        setActiveExerciseId(exerciseId);
         setIsRender(true);
     };
+
 
 
 
@@ -121,7 +136,7 @@ export default function WorkoutPage() {
         delete exerciseLogs[exerciseId];
         const endTime = new Date().getTime();
         const duration = Math.floor((endTime - startTime) / 1000);
-        setIsRender(false);
+
         setTimers((prevTimers) => ({
             ...prevTimers,
             [exerciseId]: duration,
@@ -145,7 +160,9 @@ export default function WorkoutPage() {
             }
         }));
 
-        // Добавляем эту часть кода для остановки отсчета времени
+        setIsRender(false);
+        setActiveExerciseId(null);
+
         if (exerciseId in timers) {
             clearInterval(timers[exerciseId]);
             delete timers[exerciseId];
@@ -163,15 +180,21 @@ export default function WorkoutPage() {
                 <h1 className="">Workout "{routine && routine.title}"</h1>
                 <h4>Started: {new Date(workout.timeStart).toLocaleString()}</h4>
                 <h4>Finished: {workout.timeEnd ? new Date(workout.timeEnd).toLocaleString() : "In progress"}</h4>
+                <div className="mt-4">
+                    <h3>
+                        Total Workout Time:{" "}
+                        {totalTime >= 60 ? `${minutes} min ${seconds} seconds` : `${totalTime} seconds`}
+                    </h3>
+                </div>
 
-                {exercises.map((exercise) => (
+                {exercises.map((exercise, index) => (
                     <div className="mt-4" key={exercise.id}>
-                        <h3>{exercise.name}</h3>
+                        <h3>{++index}. {exercise.name}</h3>
 
                         <button
                             className="btn btn-dark fs-5"
                             onClick={() => handleStartExercise(exercise.id)}
-                            disabled={exerciseState[exercise.id]?.isActive}
+                            disabled={(exerciseState[exercise.id]?.isActive) || activeExerciseId !== null && activeExerciseId !== exercise.id}
                         >
                             Start
                         </button>
@@ -179,27 +202,27 @@ export default function WorkoutPage() {
                         <button
                             className="btn btn-secondary ms-2 fs-5"
                             onClick={() => handleFinishExercise(exercise.id)}
-                            disabled={!activeExercises[exercise.id]}
+                            disabled={!isRender || activeExerciseId !== exercise.id}
                         >
                             Finish
                         </button>
 
                         {activeExercises[exercise.id] && (
                             <div className="fs-5">
-                                <p>Elapsed Time: {timers[exercise.id]} seconds</p>
+                                <p>Elapsed Time: <b>{formatTime(timers[exercise.id])}</b></p>
                             </div>
                         )}
 
                         {!activeExercises[exercise.id] && timers[exercise.id] !== undefined && (
                             <div className="fs-5">
-                                <p>You worked out for {completedTimes[exercise.id] ?? timers[exercise.id]} seconds</p>
+                                <p>You worked out for <b>{formatTime(completedTimes[exercise.id]) ?? timers[exercise.id]}</b></p>
                             </div>
                         )}
                     </div>
                 ))}
 
                 <button
-                    className="btn btn-primary mt-5 fs-3"
+                    className="btn btn-primary mt-5 fs-3 mb-5"
                     onClick={handleFinishWorkout}
                 >
                     Finish workout
