@@ -7,6 +7,7 @@ const accessToken = localStorage.getItem("access_token");
 
 
 export default function HomePage() {
+    const [user, setUser] = useState({});
     const [routines, setRoutines] = useState([]);
 
     let navigate = useNavigate();
@@ -70,6 +71,19 @@ export default function HomePage() {
             const { data } = res;
             setRoutines(data);
         }
+
+        async function fetchUser() {
+            const res = await axios.get(
+                "https://localhost:3999/api/users/me", {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            const { data } = res;
+            setUser(data);
+        }
+
+        fetchUser();
         fetchRoutines();
     }, []);
 
@@ -107,7 +121,8 @@ export default function HomePage() {
 
     return (
         <div>
-            <NavBar />
+            <NavBar user={user} />
+
             <div className="container mt-4">
                 <h1 className="mb-4">My Routines</h1>
                 <RoutineList routines={routines} />

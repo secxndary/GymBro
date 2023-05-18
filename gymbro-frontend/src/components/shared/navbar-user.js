@@ -1,7 +1,7 @@
 import React from "react";
 
 
-export default function NavBar() {
+export default function NavBar({ user }) {
     return (
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
@@ -11,8 +11,18 @@ export default function NavBar() {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
+                        <li class="nav-item ms-2">
                             <a class="nav-link active" href="/home">Home
+                                <span class="visually-hidden">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ms-4">
+                            <a class="nav-link active" href="/users/me">{(user.firstName && user.lastName) ? `${user.firstName} ${user.lastName}` : user.email}
+                                <span class="visually-hidden">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ms-4">
+                            <a class="nav-link active" href="/users/me">Log out
                                 <span class="visually-hidden">(current)</span>
                             </a>
                         </li>

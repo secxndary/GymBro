@@ -7,6 +7,7 @@ const accessToken = localStorage.getItem("access_token");
 
 
 export default function CreateRoutinePage() {
+    const [user, setUser] = useState({});
     const [exercises, setExercises] = useState([]);
     const [routineExercises, setRoutineExercises] = useState([]);
     const [selectedExerciseName, setSelectedExerciseName] = useState([]);
@@ -28,6 +29,19 @@ export default function CreateRoutinePage() {
             setExercises(data);
             setSelectedExerciseName(data[0].name);
         }
+
+        async function fetchUser() {
+            const res = await axios.get(
+                "https://localhost:3999/api/users/me", {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            const { data } = res;
+            setUser(data);
+        }
+
+        fetchUser();
         fetchExercises();
     }, []);
 
@@ -87,7 +101,7 @@ export default function CreateRoutinePage() {
 
     return (
         <div>
-            <NavBar />
+            <NavBar user={user} />
 
             <div className="container mt-4">
                 <h1>Create new routine</h1>

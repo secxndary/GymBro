@@ -5,6 +5,7 @@ import NavBar from "../shared/navbar-user";
 
 
 export default function WorkoutPage() {
+    const [user, setUser] = useState({});
     const [workout, setWorkout] = useState([]);
     const [routine, setRoutine] = useState(null);
     const [exercises, setExercises] = useState([]);
@@ -57,7 +58,19 @@ export default function WorkoutPage() {
             setExercises(data);
         }
 
+        async function fetchUser() {
+            const res = await axios.get(
+                "https://localhost:3999/api/users/me", {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            const { data } = res;
+            setUser(data);
+        }
+
         fetchWorkout();
+        fetchUser();
         fetchExercises();
     }, []);
 
@@ -66,7 +79,7 @@ export default function WorkoutPage() {
     function formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
-        return `${minutes} min ${remainingSeconds} seconds`;
+        return seconds > 60 ? `${minutes} min ${remainingSeconds} seconds` : `${seconds} seconds`;
     }
 
 
@@ -174,7 +187,7 @@ export default function WorkoutPage() {
 
     return (
         <div>
-            <NavBar />
+            <NavBar user={user} />
 
             <div className="container mt-4">
                 <h1 className="">Workout "{routine && routine.title}"</h1>
