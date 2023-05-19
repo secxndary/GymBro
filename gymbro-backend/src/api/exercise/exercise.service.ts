@@ -79,7 +79,7 @@ export class ExerciseService {
             data: {
                 id: uuidv4(),
                 name: name,
-                image: image != "" ? image : null,
+                // image: image != "" ? image : null,
                 technique: technique != "" ? technique : null,
                 muscleGroupId: muscleGroupId
             }
@@ -104,7 +104,7 @@ export class ExerciseService {
             where: { id: id },
             data: {
                 name: dto.name,
-                image: dto.image != "" ? dto.image : null,
+                // image: dto.image != "" ? dto.image : null,
                 technique: dto.technique != "" ? dto.technique : null,
                 muscleGroupId: dto.muscleGroupId
             }

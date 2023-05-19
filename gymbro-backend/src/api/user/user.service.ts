@@ -10,23 +10,23 @@ export class UserService {
     constructor(private prisma: PrismaService) { }
 
 
-    async addMeasurements(
-        user: User,
-        dto: MeasurementDto
-    ) {
-        const { weight, height, chest, neck, shoulders, leftBicep, rightBicep,
-            leftForearm, rightForearm, waist, thighs, calves } = dto;
-        const measurements = this.prisma.bodyMeasurement.create({
-            data: {
-                id: uuidv4(),
-                userId: user.id,
-                weight, height, chest, neck, shoulders,
-                leftBicep, rightBicep, leftForearm, rightForearm,
-                waist, thighs, calves
-            }
-        });
-        return measurements;
-    }
+    // async addMeasurements(
+    //     user: User,
+    //     dto: MeasurementDto
+    // ) {
+    //     const { weight, height, chest, neck, shoulders, leftBicep, rightBicep,
+    //         leftForearm, rightForearm, waist, thighs, calves } = dto;
+    //     const measurements = this.prisma.bodyMeasurement.create({
+    //         data: {
+    //             id: uuidv4(),
+    //             userId: user.id,
+    //             weight, height, chest, neck, shoulders,
+    //             leftBicep, rightBicep, leftForearm, rightForearm,
+    //             waist, thighs, calves
+    //         }
+    //     });
+    //     return measurements;
+    // }
 
 
     async getMe(user: User) {

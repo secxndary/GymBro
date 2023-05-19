@@ -25,15 +25,15 @@ model MuscleGroup {
 }
 
 model User {
-  id              String            @id @default(uuid())
-  email           String            @unique
-  password        String
-  firstName       String?           @map("first_name")
-  lastName        String?           @map("last_name")
-  roleId          String            @map("role_id")
-  BodyMeasurement BodyMeasurement[]
-  routine         Routine[]
-  role            Role              @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  firstName String?   @map("first_name")
+  lastName  String?   @map("last_name")
+  roleId    String    @map("role_id")
+  // BodyMeasurement BodyMeasurement[]
+  routine   Routine[]
+  role      Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
   @@map("users")
 }
@@ -41,7 +41,7 @@ model User {
 model Exercise {
   id            String      @id @default(uuid())
   name          String      @unique
-  image         String?
+  // image         String?
   technique     String?
   muscleGroupId String      @map("muscle_group_id")
   muscleGroup   MuscleGroup @relation(fields: [muscleGroupId], references: [id], onDelete: Cascade)
@@ -64,8 +64,8 @@ model Routine {
 
 model Workout {
   id        String    @id @default(uuid())
-  notes     String?
-  photo     String?
+  // notes     String?
+  // photo     String?
   routineId String    @map("routine_id")
   timeStart DateTime  @map("time_start") @db.Timestamptz(6)
   timeEnd   DateTime? @map("time_end") @db.Timestamptz(6)
@@ -86,22 +86,22 @@ model Set {
   @@map("sets")
 }
 
-model BodyMeasurement {
-  id           String @id @default(uuid())
-  weight       Float?
-  height       Float?
-  chest        Float?
-  neck         Float?
-  shoulders    Float?
-  waist        Float?
-  thighs       Float?
-  calves       Float?
-  leftBicep    Float? @map("left_bicep")
-  leftForearm  Float? @map("left_forearm")
-  rightBicep   Float? @map("right_bicep")
-  rightForearm Float? @map("right_forearm")
-  userId       String @map("user_id")
-  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+// model BodyMeasurement {
+//   id           String @id @default(uuid())
+//   weight       Float?
+//   height       Float?
+//   chest        Float?
+//   neck         Float?
+//   shoulders    Float?
+//   waist        Float?
+//   thighs       Float?
+//   calves       Float?
+//   leftBicep    Float? @map("left_bicep")
+//   leftForearm  Float? @map("left_forearm")
+//   rightBicep   Float? @map("right_bicep")
+//   rightForearm Float? @map("right_forearm")
+//   userId       String @map("user_id")
+//   user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("body_measurements")
-}
+//   @@map("body_measurements")
+// }

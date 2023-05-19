@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import NavBar from "../shared/navbar-user";
+import NavBarAdmin from "../shared/navbar-admin";
 const accessToken = localStorage.getItem("access_token");
 
 
@@ -79,7 +79,7 @@ export default function CreateExercise() {
 
     return (
         <div>
-            <NavBar />
+            <NavBarAdmin />
             <div className="container mt-5" style={{ "width": "30%" }}>
                 <h1>Create Exercise</h1>
                 <form onSubmit={handleFormSubmit}>

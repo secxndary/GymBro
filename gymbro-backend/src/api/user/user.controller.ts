@@ -30,10 +30,10 @@ export class UserController {
         return this.userService.getAllUsers(user);
     }
 
-    @Post('measurements')
-    addMeasurements(@GetUser() user: User, @Body() dto: MeasurementDto) {
-        return this.userService.addMeasurements(user, dto);
-    }
+    // @Post('measurements')
+    // addMeasurements(@GetUser() user: User, @Body() dto: MeasurementDto) {
+    //     return this.userService.addMeasurements(user, dto);
+    // }
 
     @Put('update')
     updateUser(@GetUser() user: User, @Body() dto: UserDto) {
