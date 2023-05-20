@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
+// import nodemailer from 'nodemailer';
 
 
 export default function SignUpPage() {
@@ -43,6 +44,38 @@ export default function SignUpPage() {
             setError(errorMessage);
         }
     }
+
+
+
+    function sendmail() {
+        // Создание транспортера для отправки писем
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+                user: 'gymbronotification@gmail.com',
+                pass: 'yetvzowwyzprhnic',
+            },
+        });
+
+        // Опции для отправки письма
+        const mailOptions = {
+            from: 'gymbronotification@gmail.com',
+            to: 'valdaitsevv@mail.ru',
+            subject: 'GymBro',
+            text: 'Привет, спасибо за регистрацию! Добро пожаловать в команду GymBro. Успехов в твоих тренировках!',
+        };
+
+        // Отправка письма
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log('Ошибка при отправке письма:', error);
+            } else {
+                console.log('Письмо успешно отправлено:', info.response);
+            }
+        });
+
+    }
+
 
 
 

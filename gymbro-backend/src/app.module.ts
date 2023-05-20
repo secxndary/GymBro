@@ -12,6 +12,7 @@ import { WorkoutModule } from './api/workout/workout.module';
 import { SessionModule } from './api/session/session.module';
 import { MuscleGroupModule } from './api/muscle-group/muscle-group.module';
 import { SetModule } from './api/set/set.module';
+import { NotifyGateway } from './websocket/notify.gateway';
 
 
 @Module({
@@ -28,7 +29,6 @@ import { SetModule } from './api/set/set.module';
         MuscleGroupModule,
         SetModule,
     ],
-    // controllers: [WorkoutController],
-    // providers: [WorkoutService],
+    providers: [NotifyGateway],
 })
 export class AppModule { }

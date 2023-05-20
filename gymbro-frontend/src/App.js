@@ -15,9 +15,14 @@ import UpdateExercise from './components/admin/update-exercise';
 import UserPage from './components/user/user';
 
 
+import { io } from 'socket.io-client'
+
+
+export const socket = io('https://localhost:3999');
 
 
 export default function App() {
+
     return (
         <BrowserRouter>
             <Routes>

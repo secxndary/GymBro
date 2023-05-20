@@ -4,11 +4,17 @@ import axios from "axios";
 import NavBar from "../shared/navbar-user";
 const accessToken = localStorage.getItem("access_token");
 
-
+import { socket } from '../../App'
 
 export default function HomePage() {
     const [user, setUser] = useState({});
+    const [message, setMessage] = useState(null);
     const [routines, setRoutines] = useState([]);
+
+    socket.on('notify', (msg) => {
+        console.log(msg)
+        setMessage(msg);
+    })
 
     let navigate = useNavigate();
     const changePathWorkout = routineId => {
@@ -123,6 +129,10 @@ export default function HomePage() {
         <div>
             <NavBar user={user} />
 
+            <h3 className="mt-4 container">
+                Admin message:
+                <h4 className="fs-4 text-info">{message ? message : "No messages yet"}</h4>
+            </h3>
             <div className="container mt-4">
                 <h1 className="mb-4">My Routines</h1>
                 <RoutineList routines={routines} />

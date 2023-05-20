@@ -10,6 +10,7 @@
     "bootstrap": "^5.2.3",
     "lorem-ipsum": "^2.0.8",
     "mdb-ui-kit": "^6.3.0",
+    "nodemailer": "^6.9.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
